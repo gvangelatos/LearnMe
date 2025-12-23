@@ -1,20 +1,40 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Swipe
-    </ion-title>
+    <ion-title> Swipe</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card >
-    <ion-card-header>
-      <ion-card-title>Card Title</ion-card-title>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      Here's a small text description for the card content. Nothing more, nothing less.
-    </ion-card-content>
-  </ion-card>
+  <div class="content-container">
+    @for (word of wordCards; track word.id) {
+      <ion-card [id]="word.id" class="word-card">
+        @if (word.isSwipeRight) {
+          <div class="success-overlay">
+            <ion-icon
+              class="success-icon"
+              name="checkmark-circle-outline"
+            ></ion-icon>
+          </div>
+        } @else if (word.isSwipeLeft) {
+          <div class="failure-overlay">
+            <ion-icon class="success-icon" name="close-circle-outline"></ion-icon>
+          </div>
+        }
+        <ion-card-content>
+          <div class="word-translation-container">
+            <div class="german-word-translation">
+              {{ word.article ? word.article + ' ' : '' }}{{
+                word.german_translation
+              }}
+            </div>
+            @if (word.isUnknown) {
+              <div class="english-word-translation">
+                "{{ word.english_translation }}"
+              </div>
+            }
+          </div>
+        </ion-card-content>
+      </ion-card>
+    }
+  </div>
 </ion-content>

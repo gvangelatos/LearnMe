@@ -1,0 +1,70 @@
+.word-card {
+  height: 400px;
+  width: 90vw;
+  position: absolute;
+}
+
+.content-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.german-word-translation {
+  font-size: 24px;
+  color: var(--ion-text-color);
+}
+
+.english-word-translation {
+  font-size: 20px;
+  color: var(--ion-text-color-step-400);
+}
+
+ion-card-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.word-translation-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.success-overlay {
+  -webkit-box-shadow: 0 0 100px 20px green inset;
+  -moz-box-shadow: 0 0 100px 20px green inset;
+  box-shadow: 0 0 100px 20px green inset;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.failure-overlay {
+  display: flex;
+  text-align: center;
+  justify-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-box-shadow: 0 0 100px 20px red inset;
+  -moz-box-shadow: 0 0 100px 20px red inset;
+  box-shadow: 0 0 100px 20px red inset;
+}
+
+.success-icon {
+  font-size: 50px;
+  margin-top: 85%;
+  opacity: .5;
+}
+
