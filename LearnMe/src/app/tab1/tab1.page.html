@@ -6,7 +6,8 @@
 
 <ion-content [fullscreen]="true">
   <div class="content-container">
-    @for (word of wordCards; track word.id) {
+    @for (word of wordCards(); track word.id + '-' + $index) {
+
       <ion-card [id]="word.id" class="word-card">
         @if (word.isSwipeRight) {
           <div class="success-overlay">

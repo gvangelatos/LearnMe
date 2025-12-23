@@ -2,8 +2,9 @@ export interface WordCardModel {
   german_translation: string;
   english_translation: string;
   isUnknown: boolean;
-  isSwipeRight: boolean;
-  isSwipeLeft: boolean;
-  article: string | null;
+  isSwipeRight?: boolean;
+  isSwipeLeft?: boolean;
+  article?: string;
   id: string;
+  isPlural?: boolean;
 }

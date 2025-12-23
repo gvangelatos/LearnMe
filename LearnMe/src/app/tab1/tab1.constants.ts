@@ -18,7 +18,7 @@ export const WORD_CARDS: WordCardModel[] = [
     isUnknown: false,
     isSwipeRight: false,
     isSwipeLeft: false,
-    article: null,
+    article: undefined,
     id: '2',
   },
   {
@@ -27,7 +27,7 @@ export const WORD_CARDS: WordCardModel[] = [
     isUnknown: false,
     isSwipeRight: false,
     isSwipeLeft: false,
-    article: null,
+    article: undefined,
     id: '3',
   },
   {
