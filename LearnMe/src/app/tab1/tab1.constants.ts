@@ -1,6 +1,6 @@
 import { WordCardModel } from './tab1.models';
 
-export const SWIPE_THRESSHOLD = 100;
+export const SWIPE_THRESSHOLD = 80;
 
 export const WORD_CARDS: WordCardModel[] = [
   {
