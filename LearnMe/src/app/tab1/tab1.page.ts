@@ -66,8 +66,9 @@ export class Tab1Page implements AfterViewInit {
             german_translation: any;
             isPlural: any;
           }) => {
-            this.wordCards.update((prevValue) => {
-              prevValue.push({
+            this.wordCards.update((prevValue) => [
+              ...prevValue,
+              {
                 id: word.id,
                 isUnknown: false,
                 isSwipeRight: false,
@@ -76,14 +77,12 @@ export class Tab1Page implements AfterViewInit {
                 english_translation: word.english_translation,
                 german_translation: word.german_translation,
                 isPlural: word.isPlural,
-              });
-              return prevValue;
-            });
+              },
+            ]);
           },
         );
         this.cdr.detectChanges();
-        const wordCards = this.cards.toArray();
-        this.useSwipeGesture(wordCards);
+        this.useSwipeGesture(this.cards.toArray());
       });
   }
 
@@ -147,8 +146,8 @@ export class Tab1Page implements AfterViewInit {
               german_translation: any;
               isPlural: any;
             }) => {
-              this.wordCards.update((prevValue) => {
-                prevValue.unshift({
+              this.wordCards.update((prevValue) => [
+                {
                   id: word.id,
                   isUnknown: false,
                   isSwipeRight: false,
@@ -157,14 +156,13 @@ export class Tab1Page implements AfterViewInit {
                   english_translation: word.english_translation,
                   german_translation: word.german_translation,
                   isPlural: word.isPlural,
-                });
-                return prevValue;
-              });
+                },
+                ...prevValue,
+              ]);
             },
           );
           this.cdr.detectChanges();
-          const wordCards = this.cards.toArray();
-          this.useSwipeGesture(wordCards);
+          this.useSwipeGesture(this.cards.toArray());
         });
     }
   }
