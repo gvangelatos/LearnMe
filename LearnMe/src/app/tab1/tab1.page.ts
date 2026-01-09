@@ -101,7 +101,6 @@ export class Tab1Page implements AfterViewInit {
           } else {
             this.setWordData(card.nativeElement.id, false, false);
           }
-          this.cdr.detectChanges();
         },
         onEnd: (detail) => {
           card.nativeElement.style.transition = '.5s ease-out';
@@ -176,11 +175,19 @@ export class Tab1Page implements AfterViewInit {
     swipeLeft?: boolean,
     isUnknown?: boolean,
   ) {
-    const word = this.wordCards().find((x) => x.id + '' === id + '');
-    if (word) {
-      word.isSwipeRight = swipeRight ?? word.isSwipeRight;
-      word.isSwipeLeft = swipeLeft ?? word.isSwipeLeft;
-      word.isUnknown = isUnknown ?? word.isUnknown;
-    }
+    this.wordCards.update((cards) =>
+      cards.map((word) => {
+        if (word.id + '' !== id + '') {
+          return word;
+        }
+
+        return {
+          ...word,
+          isSwipeRight: swipeRight ?? word.isSwipeRight,
+          isSwipeLeft: swipeLeft ?? word.isSwipeLeft,
+          isUnknown: isUnknown ?? word.isUnknown,
+        };
+      }),
+    );
   }
 }
