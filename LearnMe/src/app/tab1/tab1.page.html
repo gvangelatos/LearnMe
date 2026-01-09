@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
   <div class="content-container">
     @for (word of wordCards(); track word.id + '-' + $index) {
 

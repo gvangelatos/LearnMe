@@ -1,8 +1,9 @@
 .word-card {
-  height: 400px;
+  height: 130vw;
   width: 90vw;
   position: absolute;
   border-radius: 10px;
+  max-height: 80vh;
 }
 
 .content-container {
@@ -66,6 +67,6 @@ ion-card-content {
 .success-icon {
   font-size: 50px;
   margin-top: 85%;
-  opacity: .5;
+  opacity: 0.5;
 }
 
