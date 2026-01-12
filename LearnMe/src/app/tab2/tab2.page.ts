@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -6,6 +6,7 @@ import {
   IonContent,
   IonButton,
 } from '@ionic/angular/standalone';
+import { GsApiService } from '../services/gs-api/gs-api.service';
 
 @Component({
   selector: 'app-tab2',
@@ -14,5 +15,10 @@ import {
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton],
 })
 export class Tab2Page {
-  constructor() {}
+  private readonly gsApiService = inject(GsApiService);
+  constructor() {
+    this.gsApiService
+      .getRandomWordWithArticle()
+      .subscribe((x) => console.log(x));
+  }
 }

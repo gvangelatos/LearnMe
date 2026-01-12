@@ -1,12 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, switchMap } from 'rxjs';
+import {
+  defaultIfEmpty,
+  defer,
+  filter,
+  map,
+  repeat,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GsApiService {
   private readonly http = inject(HttpClient);
+  private readonly MAX_RETRIES = 5;
   getAllData() {
     return this.http
       .get(
@@ -59,6 +69,54 @@ export class GsApiService {
     );
   }
 
+  getRandomWordWithArticle() {
+    return this.getMaxId().pipe(
+      switchMap((maxId) => {
+        return defer(() => this.fetchRandomOnce(maxId)).pipe(
+          repeat({ count: this.MAX_RETRIES }),
+          filter((value) => value !== null),
+          take(1),
+          defaultIfEmpty(null),
+        );
+      }),
+    );
+  }
+
+  private fetchRandomOnce(maxRows: number) {
+    const offset = Math.floor(Math.random() * maxRows);
+
+    const query = `
+      SELECT A, B, C, D, E
+      WHERE D IS NOT NULL
+      LIMIT 1
+      OFFSET ${offset}
+    `;
+
+    return this.makeRequest(query);
+  }
+
+  private makeRequest(query: string) {
+    const url =
+      'https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/gviz/tq?' +
+      'tq=' +
+      encodeURIComponent(query);
+
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      map((text) => {
+        const json = JSON.parse(text.substring(47, text.length - 2));
+        const cols = json.table.cols.map((c: any) => c.label);
+
+        return json.table.rows.map((r: any) => {
+          const obj: any = {};
+          r.c.forEach((cell: any, i: number) => {
+            obj[cols[i]] = cell?.v ?? null;
+          });
+          return obj;
+        });
+      }),
+    );
+  }
+
   private getRandomNumbersInRange(
     min: number = 0,
     max: number,
@@ -82,24 +140,6 @@ export class GsApiService {
     WHERE A = ${positions[0]} OR A = ${positions[1]} OR A = ${positions[2]} OR A = ${positions[3]} OR A = ${positions[4]} OR A = ${positions[5]}
   `;
 
-    const url =
-      'https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/gviz/tq?' +
-      'tq=' +
-      encodeURIComponent(query);
-
-    return this.http.get(url, { responseType: 'text' }).pipe(
-      map((text) => {
-        const json = JSON.parse(text.substring(47, text.length - 2));
-        const cols = json.table.cols.map((c: any) => c.label);
-
-        return json.table.rows.map((r: any) => {
-          const obj: any = {};
-          r.c.forEach((cell: any, i: number) => {
-            obj[cols[i]] = cell?.v ?? null;
-          });
-          return obj;
-        });
-      }),
-    );
+    return this.makeRequest(query);
   }
 }
