@@ -37,12 +37,12 @@
       <div class="choices">
         @for (article of ARTICLES; track article + '-' + $index){
         <ion-button
-          (click)="answeredClicked(article)"
           class="article-btn"
           color="dark"
           expand="block"
+          (click)="answeredClicked(article)"
         >
-          {{article}}
+          {{ article }}
         </ion-button>
         }
       </div>
