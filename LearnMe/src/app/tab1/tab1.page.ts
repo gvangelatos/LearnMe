@@ -18,7 +18,7 @@ import {
   IonCardContent,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { SWIPE_THRESSHOLD, WORD_CARDS } from './tab1.constants';
+import { SWIPE_THRESSHOLD } from './swipe-page.constants';
 import { WordCardModel } from './tab1.models';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { addIcons } from 'ionicons';

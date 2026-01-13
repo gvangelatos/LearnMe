@@ -5,18 +5,21 @@ import {
   defer,
   filter,
   map,
+  Observable,
   repeat,
   switchMap,
   take,
   tap,
 } from 'rxjs';
+import { WordCardModel } from '../../tab1/tab1.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GsApiService {
   private readonly http = inject(HttpClient);
-  private readonly MAX_RETRIES = 5;
+  private readonly MAX_RETRIES = 50;
+
   getAllData() {
     return this.http
       .get(
@@ -69,14 +72,14 @@ export class GsApiService {
     );
   }
 
-  getRandomWordWithArticle() {
+  getRandomWordWithArticle(): Observable<WordCardModel[]> {
     return this.getMaxId().pipe(
       switchMap((maxId) => {
         return defer(() => this.fetchRandomOnce(maxId)).pipe(
           repeat({ count: this.MAX_RETRIES }),
-          filter((value) => value !== null),
+          filter((words) => words.length > 0),
           take(1),
-          defaultIfEmpty(null),
+          defaultIfEmpty([]),
         );
       }),
     );

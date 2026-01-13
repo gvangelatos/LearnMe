@@ -5,17 +5,48 @@
 </ion-header>
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
+  @if (!word || isLoading) {
+  <div class="spinner-container">
+    <ion-label>Getting you a word...</ion-label>
+    <ion-spinner name="lines-sharp" />
+  </div>
+  } @else {
   <div class="main-container">
-    <div class="word-container">Bucher</div>
+    <div class="word-container">
+      <div>
+        <span class="german-translation">{{word.german_translation}}</span>
+        <ion-button
+          id="click-trigger"
+          class="translation-btn"
+          size="small"
+          fill="outline"
+          shape="round"
+          color="dark"
+          (click)="toggleTranslationShow()"
+        >
+          <ion-icon slot="icon-only" name="language-outline" />
+        </ion-button>
+      </div>
+      <div>
+        <span class="english-translation" [ngClass]="{show: showTranslation}">
+          "{{word.english_translation}}"
+        </span>
+      </div>
+    </div>
     <div class="question-container">
       <div class="choices">
-        @for (article of ['Der','Die','Das','Die (Plural)']; track article + '-'
-        + $index){
-        <ion-button class="article-btn" color="dark" expand="block">
+        @for (article of ARTICLES; track article + '-' + $index){
+        <ion-button
+          (click)="answeredClicked(article)"
+          class="article-btn"
+          color="dark"
+          expand="block"
+        >
           {{article}}
         </ion-button>
         }
       </div>
     </div>
   </div>
+  }
 </ion-content>

@@ -18,14 +18,17 @@ ion-card-content {
   font-weight: bold;
   font-size: xx-large;
   color: var(--ion-color-dark-shade);
+  flex-direction: column;
 }
 
 .article-btn {
   font-weight: bold;
+  --box-shadow: 3px 5px #888;
 }
 
-ion-button {
-  --box-shadow: 3px 5px #888;
+.translation-btn {
+  margin-bottom: 22px;
+  font-size: 10px;
 }
 
 .main-container {
@@ -48,4 +51,24 @@ ion-button {
   align-items: end;
   display: flex;
   margin-bottom: 10vh;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  gap: 8px;
+}
+
+.english-translation {
+  clip-path: inset(50% round 50%);
+  transition: clip-path 1s;
+  padding: 5px;
+  font-size: x-large;
+  font-weight: normal;
+  &.show {
+    clip-path: inset(0% round 0%);
+  }
 }
