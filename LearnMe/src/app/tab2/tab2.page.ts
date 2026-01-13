@@ -9,6 +9,8 @@ import {
   IonLabel,
   IonIcon,
   IonText,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { WordCardModel } from '../tab1/tab1.models';
@@ -32,6 +34,8 @@ import { NgClass } from '@angular/common';
     IonIcon,
     NgClass,
     IonText,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 export class Tab2Page {
@@ -46,6 +50,11 @@ export class Tab2Page {
 
   constructor() {
     addIcons({ languageOutline });
+    this.isLoading = true;
+    this.makeWordCall();
+  }
+
+  private makeWordCall() {
     this.isLoading = true;
     this.gsApiService.getRandomWordWithArticle().subscribe((x) => {
       if (x.length) {
@@ -132,5 +141,10 @@ export class Tab2Page {
     }
 
     return 'dark';
+  }
+
+  protected handleRefresh() {
+    this.resetQuestion();
+    this.makeWordCall();
   }
 }

@@ -11,6 +11,9 @@
     <ion-spinner name="lines-sharp" />
   </div>
   } @else {
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="main-container">
     <div class="word-container">
       <div>
