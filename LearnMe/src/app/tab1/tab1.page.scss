@@ -39,9 +39,9 @@ ion-card-content {
 }
 
 .success-overlay {
-  -webkit-box-shadow: 0 0 100px 20px green inset;
-  -moz-box-shadow: 0 0 100px 20px green inset;
-  box-shadow: 0 0 100px 20px green inset;
+  -webkit-box-shadow: 0 0 100px 20px rgba(0, 128, 0, 0.7) inset;
+  -moz-box-shadow: 0 0 100px 20px rgba(0, 128, 0, 0.7) inset;
+  box-shadow: 0 0 100px 20px rgba(0, 128, 0, 0.7) inset;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -59,9 +59,9 @@ ion-card-content {
   position: absolute;
   height: 100%;
   width: 100%;
-  -webkit-box-shadow: 0 0 100px 20px red inset;
-  -moz-box-shadow: 0 0 100px 20px red inset;
-  box-shadow: 0 0 100px 20px red inset;
+  -webkit-box-shadow: 0 0 100px 20px rgba(255, 0, 0, 0.7) inset;
+  -moz-box-shadow: 0 0 100px 20px rgba(255, 0, 0, 0.7) inset;
+  box-shadow: 0 0 100px 20px rgba(255, 0, 0, 0.7) inset;
 }
 
 .success-icon {
@@ -69,4 +69,3 @@ ion-card-content {
   margin-top: 85%;
   opacity: 0.5;
 }
-

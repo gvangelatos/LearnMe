@@ -16,7 +16,7 @@ import { GsApiService } from '../services/gs-api/gs-api.service';
 import { WordCardModel } from '../tab1/tab1.models';
 import { ARTICLES } from './articles-page.constants';
 import { addIcons } from 'ionicons';
-import { languageOutline } from 'ionicons/icons';
+import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -49,7 +49,7 @@ export class Tab2Page {
   protected showTranslation: boolean = false;
 
   constructor() {
-    addIcons({ languageOutline });
+    addIcons({ languageOutline, arrowForwardOutline });
     this.isLoading = true;
     this.makeWordCall();
   }

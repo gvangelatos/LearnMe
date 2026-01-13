@@ -52,6 +52,20 @@
         }
       </div>
     </div>
+
+    @if (answered){
+    <div class="next-button">
+      <ion-button
+        class="next"
+        color="secondary"
+        shape="round"
+        [disabled]="isLoading"
+        (click)="handleRefresh()"
+      >
+        <ion-icon slot="icon-only" name="arrow-forward-outline" />
+      </ion-button>
+    </div>
+    }
   </div>
   }
 </ion-content>
