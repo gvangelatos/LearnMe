@@ -14,7 +14,9 @@
   <div class="main-container">
     <div class="word-container">
       <div>
-        <span class="german-translation">{{word.german_translation}}</span>
+        <ion-text [color]="getTextColor()">
+          <span class="german-translation">{{word.german_translation}}</span>
+        </ion-text>
         <ion-button
           id="click-trigger"
           class="translation-btn"
@@ -38,9 +40,9 @@
         @for (article of ARTICLES; track article + '-' + $index){
         <ion-button
           class="article-btn"
-          color="dark"
-          expand="block"
-          (click)="answeredClicked(article)"
+          [disabled]="isLoading"
+          [color]="getButtonColor($index)"
+          (click)="answeredClicked(article,$index)"
         >
           {{ article }}
         </ion-button>
