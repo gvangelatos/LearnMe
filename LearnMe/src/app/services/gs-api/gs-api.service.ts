@@ -99,9 +99,10 @@ export class GsApiService {
   }
 
   fetchMatchingWords(subString: string): Observable<WordCardModel[]> {
+    const safeSubstring = subString.replace(/'/g, "\\'");
     const query = `
       SELECT A, B, C, D, E
-      WHERE B CONTAINS '${subString}'
+      WHERE lower(B) CONTAINS lower('${safeSubstring}')
     `;
 
     return this.makeRequest(query);
