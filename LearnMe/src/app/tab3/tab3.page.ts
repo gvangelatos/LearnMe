@@ -47,6 +47,15 @@ export class Tab3Page {
     this.searchControl.valueChanges
       .pipe(
         tap(() => (this.isLoading = true)),
+        tap((value) => {
+          if (value && value.length < 3) {
+            this.isLoading = false;
+            this.words.set([]);
+          } else if (!value) {
+            this.isLoading = false;
+            this.words.set([]);
+          }
+        }),
         debounceTime(300),
         filter((value) => !!value),
         switchMap((value) => {
