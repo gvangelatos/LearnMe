@@ -1,17 +1,37 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title> Word Database </ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [animated]="true"
+      [debounce]="300"
+      [formControl]="searchControl"
+      inputmode="text"
+      show-clear-button="focus"
+      placeholder="Search Word"
+    />
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  So Empty...
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
+  @if (isLoading) {
+  <div class="spinner-container">
+    <ion-label>Looking for words...</ion-label>
+    <ion-spinner name="lines-sharp" />
+  </div>
+  } @else if(!isLoading && words().length){ @for (word of words(); track word.id
+  + '-' + $index){
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-label>
+        {{ word.article ? word.article + ' ' : '' }}{{ word.german_translation
+        }}
+      </ion-label>
+      <ion-note slot="end">{{word.english_translation}}</ion-note>
+    </ion-item>
+  </ion-list>
+  } }@else if(!isLoading && searchControl.value?.length){
+  <div class="spinner-container">Oops... We found nothing!</div>
+  }
 </ion-content>

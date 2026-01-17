@@ -98,6 +98,15 @@ export class GsApiService {
     return this.makeRequest(query);
   }
 
+  fetchMatchingWords(subString: string): Observable<WordCardModel[]> {
+    const query = `
+      SELECT A, B, C, D, E
+      WHERE B CONTAINS '${subString}'
+    `;
+
+    return this.makeRequest(query);
+  }
+
   private makeRequest(query: string) {
     const url =
       'https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/gviz/tq?' +
