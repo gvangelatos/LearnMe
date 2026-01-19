@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   LocalStorageKeysEnum,
-  SWIPER_PAGE_BASE_LOCAL_STORAGE_VALUE,
-  SwiperPageLocalStorageDataType,
-  SwiperPageMonthStats,
+  PAGE_BASE_LOCAL_STORAGE_VALUE,
+  PageLocalStorageDataType,
+  PageMonthStats,
 } from '../../utils/constants/global.constants';
 
 @Injectable({
@@ -30,51 +30,85 @@ export class LocalStorageService {
   }
 
   addSwiperPageFailure(): void {
-    const swiperPageStatistics: SwiperPageLocalStorageDataType =
-      this.handleSwiperLocalStorageDataRetrieval();
-    const yearMonth = this.getYearMonth();
-    const current: SwiperPageMonthStats = swiperPageStatistics.byMonth[
-      yearMonth
-    ] ?? {
-      successes: 0,
-      fails: 0,
-    };
-    const newSwiperPageStatistics = {
-      ...swiperPageStatistics,
-      totalFails: swiperPageStatistics.totalFails + 1,
-      byMonth: {
-        ...swiperPageStatistics.byMonth,
-        [yearMonth]: {
-          ...current,
-          fails: current.fails + 1,
-        },
-      },
-    };
-    this.setItem(LocalStorageKeysEnum.SwiperPage, newSwiperPageStatistics);
+    const swiperPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.SwiperPage);
+    this.applyPageFailure(
+      LocalStorageKeysEnum.SwiperPage,
+      swiperPageStatistics,
+    );
+  }
+
+  addArticlesPageSuccess(): void {
+    const articlesPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.ArticlesPage);
+    this.applyPageSuccess(
+      LocalStorageKeysEnum.ArticlesPage,
+      articlesPageStatistics,
+    );
+  }
+
+  addArticlesPageFailure(): void {
+    const articlesPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.ArticlesPage);
+    this.applyPageFailure(
+      LocalStorageKeysEnum.ArticlesPage,
+      articlesPageStatistics,
+    );
   }
 
   addSwiperPageSuccess(): void {
-    const swiperPageStatistics: SwiperPageLocalStorageDataType =
-      this.handleSwiperLocalStorageDataRetrieval();
+    const swiperPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.SwiperPage);
+    this.applyPageSuccess(
+      LocalStorageKeysEnum.SwiperPage,
+      swiperPageStatistics,
+    );
+  }
+
+  private applyPageSuccess(
+    key: LocalStorageKeysEnum,
+    pageStatistics: PageLocalStorageDataType,
+  ): void {
     const yearMonth = this.getYearMonth();
-    const current: SwiperPageMonthStats = swiperPageStatistics.byMonth[
-      yearMonth
-    ] ?? {
+    const current: PageMonthStats = pageStatistics.byMonth[yearMonth] ?? {
       successes: 0,
       fails: 0,
     };
-    const newSwiperPageStatistics = {
-      ...swiperPageStatistics,
-      totalSuccesses: swiperPageStatistics.totalSuccesses + 1,
+    const newPageStatistics = {
+      ...pageStatistics,
+      totalSuccesses: pageStatistics.totalSuccesses + 1,
       byMonth: {
-        ...swiperPageStatistics.byMonth,
+        ...pageStatistics.byMonth,
         [yearMonth]: {
           ...current,
           successes: current.successes + 1,
         },
       },
     };
-    this.setItem(LocalStorageKeysEnum.SwiperPage, newSwiperPageStatistics);
+    this.setItem(key, newPageStatistics);
+  }
+
+  private applyPageFailure(
+    key: LocalStorageKeysEnum,
+    pageStatistics: PageLocalStorageDataType,
+  ): void {
+    const yearMonth = this.getYearMonth();
+    const current: PageMonthStats = pageStatistics.byMonth[yearMonth] ?? {
+      successes: 0,
+      fails: 0,
+    };
+    const newPageStatistics = {
+      ...pageStatistics,
+      totalFails: pageStatistics.totalFails + 1,
+      byMonth: {
+        ...pageStatistics.byMonth,
+        [yearMonth]: {
+          ...current,
+          fails: current.fails + 1,
+        },
+      },
+    };
+    this.setItem(key, newPageStatistics);
   }
 
   private getYearMonth(date: Date = new Date()): string {
@@ -83,16 +117,13 @@ export class LocalStorageService {
     return `${year}-${month}`;
   }
 
-  private handleSwiperLocalStorageDataRetrieval(): SwiperPageLocalStorageDataType {
-    let swiperPageStatistics = this.getItem<SwiperPageLocalStorageDataType>(
-      LocalStorageKeysEnum.SwiperPage,
-    );
+  private handleLocalStorageDataRetrieval(
+    key: LocalStorageKeysEnum,
+  ): PageLocalStorageDataType {
+    let swiperPageStatistics = this.getItem<PageLocalStorageDataType>(key);
     if (!swiperPageStatistics) {
-      this.setItem(
-        LocalStorageKeysEnum.SwiperPage,
-        SWIPER_PAGE_BASE_LOCAL_STORAGE_VALUE,
-      );
-      swiperPageStatistics = SWIPER_PAGE_BASE_LOCAL_STORAGE_VALUE;
+      this.setItem(key, PAGE_BASE_LOCAL_STORAGE_VALUE);
+      swiperPageStatistics = PAGE_BASE_LOCAL_STORAGE_VALUE;
     }
     return swiperPageStatistics;
   }

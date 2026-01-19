@@ -1,13 +1,10 @@
-export type YearMonth =
-  `${number}-${'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'}`;
-
-export interface SwiperPageLocalStorageDataType {
+export interface PageLocalStorageDataType {
   totalSuccesses: number;
   totalFails: number;
-  byMonth: Record<string, SwiperPageMonthStats>;
+  byMonth: Record<string, PageMonthStats>;
 }
 
-export interface SwiperPageMonthStats {
+export interface PageMonthStats {
   successes: number;
   fails: number;
 }
@@ -18,9 +15,8 @@ export enum LocalStorageKeysEnum {
   ArticlesPage = 'articlesPageStatistics',
 }
 
-export const SWIPER_PAGE_BASE_LOCAL_STORAGE_VALUE: SwiperPageLocalStorageDataType =
-  {
-    totalSuccesses: 0,
-    totalFails: 0,
-    byMonth: {},
-  };
+export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {
+  totalSuccesses: 0,
+  totalFails: 0,
+  byMonth: {},
+};

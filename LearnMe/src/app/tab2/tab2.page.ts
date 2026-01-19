@@ -18,6 +18,7 @@ import { ARTICLES } from './articles-page.constants';
 import { addIcons } from 'ionicons';
 import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NgClass } from '@angular/common';
+import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 
 @Component({
   selector: 'app-tab2',
@@ -40,6 +41,7 @@ import { NgClass } from '@angular/common';
 })
 export class Tab2Page {
   private readonly gsApiService = inject(GsApiService);
+  private readonly localStorageService = inject(LocalStorageService);
   protected word?: WordCardModel;
   protected isCorrect: boolean = false;
   protected answered: boolean = false;
@@ -102,6 +104,9 @@ export class Tab2Page {
   }
 
   private handleAnswer(correct: boolean) {
+    correct
+      ? this.localStorageService.addArticlesPageSuccess()
+      : this.localStorageService.addArticlesPageFailure();
     this.isCorrect = correct;
     this.answered = true;
     this.showTranslation = true;

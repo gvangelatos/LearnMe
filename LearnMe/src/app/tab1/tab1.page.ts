@@ -43,10 +43,10 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 export class Tab1Page implements AfterViewInit {
   @ViewChildren(IonCard, { read: ElementRef })
   cards!: QueryList<ElementRef>;
-  private readonly gestureCtrl = inject(GestureController);
   private readonly platform = inject(Platform);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly gsApiService = inject(GsApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly gestureCtrl = inject(GestureController);
   private readonly localStorageService = inject(LocalStorageService);
   protected wordCards = signal<WordCardModel[]>([]);
 
