@@ -9,6 +9,19 @@ export interface PageMonthStats {
   fails: number;
 }
 
+export interface SearchPageLocalStorageDataType {
+  totalSearches: number;
+  totalSuccessSearches: number;
+  totalEmptySearches: number;
+  byMonth: Record<string, SearchPageMonthStats>;
+}
+
+export interface SearchPageMonthStats {
+  searches: number;
+  successSearches: number;
+  emptySearches: number;
+}
+
 export enum LocalStorageKeysEnum {
   SwiperPage = 'swiperPageStatistics',
   SearchPage = 'searchPageStatistics',
@@ -20,3 +33,11 @@ export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {
   totalFails: 0,
   byMonth: {},
 };
+
+export const SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE: SearchPageLocalStorageDataType =
+  {
+    totalSearches: 0,
+    totalEmptySearches: 0,
+    totalSuccessSearches: 0,
+    byMonth: {},
+  };

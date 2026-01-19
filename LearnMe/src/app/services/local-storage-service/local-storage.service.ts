@@ -4,6 +4,9 @@ import {
   PAGE_BASE_LOCAL_STORAGE_VALUE,
   PageLocalStorageDataType,
   PageMonthStats,
+  SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE,
+  SearchPageLocalStorageDataType,
+  SearchPageMonthStats,
 } from '../../utils/constants/global.constants';
 
 @Injectable({
@@ -38,6 +41,14 @@ export class LocalStorageService {
     );
   }
 
+  addSearchPageSearch(emptyResults: boolean) {
+    const searchPageStatistics: SearchPageLocalStorageDataType =
+      this.handleSearchPageLocalStorageDataRetrieval();
+    emptyResults
+      ? this.applySearchPageIncrementEmpty(searchPageStatistics)
+      : this.applySearchPageIncrement(searchPageStatistics);
+  }
+
   addArticlesPageSuccess(): void {
     const articlesPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.ArticlesPage);
@@ -63,6 +74,56 @@ export class LocalStorageService {
       LocalStorageKeysEnum.SwiperPage,
       swiperPageStatistics,
     );
+  }
+
+  private applySearchPageIncrement(
+    pageStatistics: SearchPageLocalStorageDataType,
+  ): void {
+    const yearMonth = this.getYearMonth();
+    const current: SearchPageMonthStats = pageStatistics.byMonth[yearMonth] ?? {
+      searches: 0,
+      successSearches: 0,
+      emptySearches: 0,
+    };
+    const newPageStatistics = {
+      ...pageStatistics,
+      totalSearches: pageStatistics.totalSearches + 1,
+      totalSuccessSearches: pageStatistics.totalSuccessSearches + 1,
+      byMonth: {
+        ...pageStatistics.byMonth,
+        [yearMonth]: {
+          ...current,
+          searches: current.searches + 1,
+          successSearches: current.successSearches + 1,
+        },
+      },
+    };
+    this.setItem(LocalStorageKeysEnum.SearchPage, newPageStatistics);
+  }
+
+  private applySearchPageIncrementEmpty(
+    pageStatistics: SearchPageLocalStorageDataType,
+  ): void {
+    const yearMonth = this.getYearMonth();
+    const current: SearchPageMonthStats = pageStatistics.byMonth[yearMonth] ?? {
+      searches: 0,
+      successSearches: 0,
+      emptySearches: 0,
+    };
+    const newPageStatistics = {
+      ...pageStatistics,
+      totalSearches: pageStatistics.totalSearches + 1,
+      totalEmptySearches: pageStatistics.totalEmptySearches + 1,
+      byMonth: {
+        ...pageStatistics.byMonth,
+        [yearMonth]: {
+          ...current,
+          searches: current.searches + 1,
+          emptySearches: current.emptySearches + 1,
+        },
+      },
+    };
+    this.setItem(LocalStorageKeysEnum.SearchPage, newPageStatistics);
   }
 
   private applyPageSuccess(
@@ -120,12 +181,26 @@ export class LocalStorageService {
   private handleLocalStorageDataRetrieval(
     key: LocalStorageKeysEnum,
   ): PageLocalStorageDataType {
-    let swiperPageStatistics = this.getItem<PageLocalStorageDataType>(key);
-    if (!swiperPageStatistics) {
+    let pageStatistics = this.getItem<PageLocalStorageDataType>(key);
+    if (!pageStatistics) {
       this.setItem(key, PAGE_BASE_LOCAL_STORAGE_VALUE);
-      swiperPageStatistics = PAGE_BASE_LOCAL_STORAGE_VALUE;
+      pageStatistics = PAGE_BASE_LOCAL_STORAGE_VALUE;
     }
-    return swiperPageStatistics;
+    return pageStatistics;
+  }
+
+  private handleSearchPageLocalStorageDataRetrieval(): SearchPageLocalStorageDataType {
+    let searchPageStatistics = this.getItem<SearchPageLocalStorageDataType>(
+      LocalStorageKeysEnum.SearchPage,
+    );
+    if (!searchPageStatistics) {
+      this.setItem(
+        LocalStorageKeysEnum.SearchPage,
+        SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE,
+      );
+      searchPageStatistics = SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE;
+    }
+    return searchPageStatistics;
   }
 
   private clear(): void {

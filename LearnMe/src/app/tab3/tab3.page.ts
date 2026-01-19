@@ -17,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, filter, of, switchMap, tap } from 'rxjs';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { WordCardModel } from '../tab1/tab1.models';
+import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 
 @Component({
   selector: 'app-tab3',
@@ -39,6 +40,7 @@ import { WordCardModel } from '../tab1/tab1.models';
 export class Tab3Page {
   private readonly formBuilder = inject(FormBuilder);
   private readonly gsApiService = inject(GsApiService);
+  private readonly localStorageService = inject(LocalStorageService);
   protected searchControl = this.formBuilder.control<string>('');
   protected words = signal<WordCardModel[]>([]);
   protected isLoading: boolean = false;
@@ -67,6 +69,7 @@ export class Tab3Page {
         next: (value) => {
           this.isLoading = false;
           this.words.set(value);
+          this.localStorageService.addSearchPageSearch(!value.length);
         },
         error: (error) => {
           this.isLoading = false;
