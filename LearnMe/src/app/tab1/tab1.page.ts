@@ -18,12 +18,13 @@ import {
   IonCardContent,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { SWIPE_THRESSHOLD } from './swipe-page.constants';
+import { SWIPE_THRESHOLD } from './swipe-page.constants';
 import { WordCardModel } from './tab1.models';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { addIcons } from 'ionicons';
 import { checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
 import { take } from 'rxjs';
+import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 
 @Component({
   selector: 'app-tab1',
@@ -46,6 +47,7 @@ export class Tab1Page implements AfterViewInit {
   private readonly platform = inject(Platform);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly gsApiService = inject(GsApiService);
+  private readonly localStorageService = inject(LocalStorageService);
   protected wordCards = signal<WordCardModel[]>([]);
 
   constructor() {
@@ -86,16 +88,16 @@ export class Tab1Page implements AfterViewInit {
       });
   }
 
-  useSwipeGesture(cardsArray: ElementRef<any>[]) {
+  private useSwipeGesture(cardsArray: ElementRef<any>[]) {
     cardsArray.forEach((card) => {
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,
         onStart: () => {},
         onMove: (detail) => {
           card.nativeElement.style.transform = `translateX(${detail.deltaX}px) rotate(${detail.deltaX / 10}deg)`;
-          if (detail.deltaX > SWIPE_THRESSHOLD) {
+          if (detail.deltaX > SWIPE_THRESHOLD) {
             this.setWordData(card.nativeElement.id, true, false);
-          } else if (detail.deltaX < -SWIPE_THRESSHOLD) {
+          } else if (detail.deltaX < -SWIPE_THRESHOLD) {
             this.setWordData(card.nativeElement.id, false, true);
           } else {
             this.setWordData(card.nativeElement.id, false, false);
@@ -104,11 +106,13 @@ export class Tab1Page implements AfterViewInit {
         onEnd: (detail) => {
           card.nativeElement.style.transition = '.5s ease-out';
           this.setWordData(card.nativeElement.id, false, false);
-          if (detail.deltaX > SWIPE_THRESSHOLD) {
+          if (detail.deltaX > SWIPE_THRESHOLD) {
             card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${detail.deltaX / 2}deg)`;
             this.removeSuccessWordCard(card.nativeElement.id, gesture);
-          } else if (detail.deltaX < -SWIPE_THRESSHOLD) {
+            this.documentSuccess(card.nativeElement.id);
+          } else if (detail.deltaX < -SWIPE_THRESHOLD) {
             card.nativeElement.style.transform = '';
+            this.documentFailure(card.nativeElement.id);
             this.setWordData(card.nativeElement.id, undefined, undefined, true);
           } else {
             card.nativeElement.style.transform = '';
@@ -122,7 +126,7 @@ export class Tab1Page implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  removeSuccessWordCard(id: string, gesture: Gesture) {
+  private removeSuccessWordCard(id: string, gesture: Gesture) {
     setTimeout(() => {
       this.wordCards.update((prevValue) => {
         return prevValue.filter((x) => x.id + '' !== id + '');
@@ -132,7 +136,7 @@ export class Tab1Page implements AfterViewInit {
     }, 600);
   }
 
-  checkForLowNumberOfWordsInArray() {
+  private checkForLowNumberOfWordsInArray() {
     if (this.wordCards().length < 3) {
       this.gsApiService
         .getRandomWords(this.wordCards().map((x) => +x.id))
@@ -167,7 +171,7 @@ export class Tab1Page implements AfterViewInit {
     }
   }
 
-  setWordData(
+  private setWordData(
     id: string,
     swipeRight?: boolean,
     swipeLeft?: boolean,
@@ -187,5 +191,25 @@ export class Tab1Page implements AfterViewInit {
         };
       }),
     );
+  }
+
+  private documentSuccess(cardId: string) {
+    if (
+      this.wordCards().some((card) => {
+        return card.id + '' === cardId && !card.isUnknown;
+      })
+    ) {
+      this.localStorageService.addSwiperPageSuccess();
+    }
+  }
+
+  private documentFailure(cardId: string) {
+    if (
+      this.wordCards().some((card) => {
+        return card.id + '' === cardId && !card.isUnknown;
+      })
+    ) {
+      this.localStorageService.addSwiperPageFailure();
+    }
   }
 }
