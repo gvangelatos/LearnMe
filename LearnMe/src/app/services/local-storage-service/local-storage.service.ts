@@ -178,7 +178,7 @@ export class LocalStorageService {
     return `${year}-${month}`;
   }
 
-  private handleLocalStorageDataRetrieval(
+  handleLocalStorageDataRetrieval(
     key: LocalStorageKeysEnum,
   ): PageLocalStorageDataType {
     let pageStatistics = this.getItem<PageLocalStorageDataType>(key);
@@ -189,7 +189,7 @@ export class LocalStorageService {
     return pageStatistics;
   }
 
-  private handleSearchPageLocalStorageDataRetrieval(): SearchPageLocalStorageDataType {
+  handleSearchPageLocalStorageDataRetrieval(): SearchPageLocalStorageDataType {
     let searchPageStatistics = this.getItem<SearchPageLocalStorageDataType>(
       LocalStorageKeysEnum.SearchPage,
     );

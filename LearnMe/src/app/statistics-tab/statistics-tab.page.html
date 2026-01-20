@@ -2,6 +2,115 @@
   <ion-toolbar>
     <ion-title> Statistics </ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment
+      [value]="SegmentsLabels.SwiperPage"
+      [scrollable]="true"
+      (ionChange)="segmentChange($event)"
+    >
+      <ion-segment-button
+        [value]="SegmentsLabels.SwiperPage"
+        content-id="swiper-segment"
+      >
+        <ion-label>Swipes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        [value]="SegmentsLabels.ArticlesPage"
+        content-id="articles-segment"
+        [disabled]="true"
+      >
+        <ion-label>Articles</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        [value]="SegmentsLabels.SearchSegment"
+        content-id="search-segment"
+        [disabled]="true"
+      >
+        <ion-label>Search</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [forceOverscroll]="false" [fullscreen]="true"></ion-content>
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
+  <ion-segment-view>
+    <ion-segment-content id="swiper-segment">
+      <div class="container">
+        <div class="chart-container">
+          @if (activeSegment === SegmentsLabels.SwiperPage){
+          <ngx-charts-bar-vertical
+            [results]="swiperTotalResults"
+            [xAxis]="true"
+            [yAxis]="true"
+            [gradient]="true"
+            [scheme]="colorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [trimXAxisTicks]="false"
+            [showDataLabel]="true"
+            legendTitle="Swipes (Total)"
+          />
+          }
+        </div>
+      </div>
+    </ion-segment-content>
+    <ion-segment-content id="articles-segment">
+      <div class="container">
+        <div class="chart-container">
+          @if (activeSegment === SegmentsLabels.ArticlesPage){
+          <ngx-charts-bar-vertical
+            [results]="articlesTotalResults"
+            [xAxis]="true"
+            [yAxis]="true"
+            [gradient]="true"
+            [scheme]="colorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [trimXAxisTicks]="false"
+            [showDataLabel]="true"
+            legendTitle="Articles Answers"
+          />
+          }
+        </div>
+      </div>
+    </ion-segment-content>
+    <ion-segment-content id="search-segment">
+      <div class="container">
+        @if (activeSegment === SegmentsLabels.SearchSegment){
+        <div class="small-margin-bottom-chart-container">
+          <ngx-charts-number-card
+            [results]="searchTotalResults"
+            [animations]="true"
+          />
+        </div>
+        <div class="chart-container">
+          <ngx-charts-bar-vertical
+            [results]="searchTotalResults"
+            [xAxis]="true"
+            [yAxis]="true"
+            [gradient]="true"
+            [scheme]="colorSchemesSearch"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [trimXAxisTicks]="false"
+            [showDataLabel]="true"
+            legendTitle="Searches"
+          />
+        </div>
+        <div class="chart-container">
+          <ngx-charts-pie-chart
+            [results]="searchTotalResultsVS"
+            [gradient]="true"
+            [scheme]="colorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [doughnut]="true"
+            [labels]="true"
+            legendTitle="Searches"
+          />
+        </div>
+        }
+      </div>
+    </ion-segment-content>
+  </ion-segment-view>
+</ion-content>

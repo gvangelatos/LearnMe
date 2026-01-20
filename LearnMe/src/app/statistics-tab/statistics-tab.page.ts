@@ -1,17 +1,150 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonContent,
   IonHeader,
+  IonLabel,
+  IonSegment,
+  IonSegmentButton,
+  IonSegmentContent,
+  IonSegmentView,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
+import {
+  LocalStorageKeysEnum,
+  PageLocalStorageDataType,
+  SearchPageLocalStorageDataType,
+} from '../utils/constants/global.constants';
+import { Color, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
+import { SegmentsLabels } from './statistics-tab.contants';
 
 @Component({
   selector: 'app-statistics-tab',
   templateUrl: './statistics-tab.page.html',
   styleUrls: ['./statistics-tab.page.scss'],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar],
+  imports: [
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    NgxChartsModule,
+    IonLabel,
+    IonSegment,
+    IonSegmentButton,
+    IonSegmentView,
+    IonSegmentContent,
+  ],
 })
 export class StatisticsTabPage {
-  constructor() {}
+  private readonly localStorageService = inject(LocalStorageService);
+  private swiperPageData?: PageLocalStorageDataType;
+  private articlesPageData?: PageLocalStorageDataType;
+  private searchPageData?: SearchPageLocalStorageDataType;
+  protected readonly colorSchemes = {
+    domain: [
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--ion-color-success')
+        .trim(),
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--ion-color-danger')
+        .trim(),
+    ],
+  } as Color;
+
+  protected readonly colorSchemesSearch = {
+    domain: [
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--ion-color-primary')
+        .trim(),
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--ion-color-success')
+        .trim(),
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--ion-color-danger')
+        .trim(),
+    ],
+  } as Color;
+
+  protected swiperTotalResults: { name: string; value: number }[] = [];
+  protected articlesTotalResults: { name: string; value: number }[] = [];
+  protected searchTotalResults: { name: string; value: number }[] = [];
+  protected searchTotalResultsVS: { name: string; value: number }[] = [];
+  protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
+
+  ionViewDidEnter() {
+    this.getSwiperPageData();
+    this.getArticlesPageData();
+    this.getSearchPageData();
+  }
+
+  segmentChange(event: any) {
+    this.activeSegment = event.detail.value;
+  }
+
+  protected getSwiperPageData() {
+    this.swiperPageData =
+      this.localStorageService.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.SwiperPage,
+      );
+    this.swiperTotalResults = [
+      {
+        name: 'Swiped right (Known)',
+        value: this.swiperPageData.totalSuccesses,
+      },
+      {
+        name: 'Swiped left (Unknown)',
+        value: this.swiperPageData.totalFails,
+      },
+    ];
+  }
+
+  protected getArticlesPageData() {
+    this.articlesPageData =
+      this.localStorageService.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.ArticlesPage,
+      );
+    this.articlesTotalResults = [
+      {
+        name: 'Right Answers',
+        value: this.articlesPageData.totalSuccesses,
+      },
+      {
+        name: 'Wrong Answers',
+        value: this.articlesPageData.totalFails,
+      },
+    ];
+  }
+
+  protected getSearchPageData() {
+    this.searchPageData =
+      this.localStorageService.handleSearchPageLocalStorageDataRetrieval();
+    this.searchTotalResults = [
+      {
+        name: 'Total Searches',
+        value: this.searchPageData.totalSearches,
+      },
+      {
+        name: 'Successful Searches',
+        value: this.searchPageData.totalSuccessSearches,
+      },
+      {
+        name: 'Empty Searches',
+        value: this.searchPageData.totalEmptySearches,
+      },
+    ];
+    this.searchTotalResultsVS = [
+      {
+        name: 'Successful Searches',
+        value: this.searchPageData.totalSuccessSearches,
+      },
+      {
+        name: 'Empty Searches',
+        value: this.searchPageData.totalEmptySearches,
+      },
+    ];
+  }
+
+  protected readonly LegendPosition = LegendPosition;
+  protected readonly SegmentsLabels = SegmentsLabels;
 }

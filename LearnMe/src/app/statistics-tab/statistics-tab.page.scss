@@ -1,0 +1,30 @@
+.container {
+  height: max-content;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  flex-wrap: wrap;
+}
+
+.max-width {
+  width: 100%;
+}
+
+.border-top {
+  border-top: 1px solid grey;
+}
+
+.chart-container {
+  padding-top: 16px;
+  height: 300px;
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+.small-margin-bottom-chart-container {
+  padding-top: 16px;
+  height: 300px;
+  width: 100%;
+  margin-bottom: 16px;
+}
