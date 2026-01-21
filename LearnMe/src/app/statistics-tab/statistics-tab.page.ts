@@ -41,7 +41,7 @@ export class StatisticsTabPage {
   private swiperPageData?: PageLocalStorageDataType;
   private articlesPageData?: PageLocalStorageDataType;
   private searchPageData?: SearchPageLocalStorageDataType;
-  protected readonly colorSchemes = {
+  protected readonly dualColorSchemes = {
     domain: [
       getComputedStyle(document.documentElement)
         .getPropertyValue('--ion-color-success')
@@ -52,7 +52,7 @@ export class StatisticsTabPage {
     ],
   } as Color;
 
-  protected readonly colorSchemesSearch = {
+  protected readonly tripleColorSchemes = {
     domain: [
       getComputedStyle(document.documentElement)
         .getPropertyValue('--ion-color-primary')
@@ -67,7 +67,9 @@ export class StatisticsTabPage {
   } as Color;
 
   protected swiperTotalResults: { name: string; value: number }[] = [];
+  protected swiperTotalResultsVS: { name: string; value: number }[] = [];
   protected articlesTotalResults: { name: string; value: number }[] = [];
+  protected articlesTotalResultsVS: { name: string; value: number }[] = [];
   protected searchTotalResults: { name: string; value: number }[] = [];
   protected searchTotalResultsVS: { name: string; value: number }[] = [];
   protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
@@ -89,11 +91,26 @@ export class StatisticsTabPage {
       );
     this.swiperTotalResults = [
       {
+        name: 'Total Swipes',
+        value:
+          this.swiperPageData.totalSuccesses + this.swiperPageData.totalFails,
+      },
+      {
         name: 'Swiped right (Known)',
         value: this.swiperPageData.totalSuccesses,
       },
       {
         name: 'Swiped left (Unknown)',
+        value: this.swiperPageData.totalFails,
+      },
+    ];
+    this.swiperTotalResultsVS = [
+      {
+        name: 'Right (Known)',
+        value: this.swiperPageData.totalSuccesses,
+      },
+      {
+        name: 'Left (Unknown)',
         value: this.swiperPageData.totalFails,
       },
     ];
@@ -105,6 +122,22 @@ export class StatisticsTabPage {
         LocalStorageKeysEnum.ArticlesPage,
       );
     this.articlesTotalResults = [
+      {
+        name: 'Total Rounds',
+        value:
+          this.articlesPageData.totalSuccesses +
+          this.articlesPageData.totalFails,
+      },
+      {
+        name: 'Right Answers',
+        value: this.articlesPageData.totalSuccesses,
+      },
+      {
+        name: 'Wrong Answers',
+        value: this.articlesPageData.totalFails,
+      },
+    ];
+    this.articlesTotalResultsVS = [
       {
         name: 'Right Answers',
         value: this.articlesPageData.totalSuccesses,

@@ -36,42 +36,79 @@
   <ion-segment-view>
     <ion-segment-content id="swiper-segment">
       <div class="container">
+        @if (activeSegment === SegmentsLabels.SwiperPage){
+        <div class="small-margin-bottom-chart-container">
+          <ngx-charts-pie-grid
+            [scheme]="dualColorSchemes"
+            [results]="swiperTotalResultsVS"
+          />
+        </div>
         <div class="chart-container">
-          @if (activeSegment === SegmentsLabels.SwiperPage){
           <ngx-charts-bar-vertical
             [results]="swiperTotalResults"
             [xAxis]="true"
             [yAxis]="true"
             [gradient]="true"
-            [scheme]="colorSchemes"
+            [scheme]="tripleColorSchemes"
             [legend]="true"
             [legendPosition]="LegendPosition.Below"
             [trimXAxisTicks]="false"
             [showDataLabel]="true"
             legendTitle="Swipes (Total)"
           />
-          }
         </div>
+        <div class="chart-container">
+          <ngx-charts-pie-chart
+            [results]="swiperTotalResultsVS"
+            [gradient]="true"
+            [scheme]="dualColorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [doughnut]="true"
+            [labels]="true"
+            legendTitle="Swipes"
+          />
+        </div>
+
+        }
       </div>
     </ion-segment-content>
     <ion-segment-content id="articles-segment">
       <div class="container">
+        @if (activeSegment === SegmentsLabels.ArticlesPage){
+        <div class="small-margin-bottom-chart-container">
+          <ngx-charts-pie-grid
+            [scheme]="dualColorSchemes"
+            [results]="articlesTotalResultsVS"
+          />
+        </div>
         <div class="chart-container">
-          @if (activeSegment === SegmentsLabels.ArticlesPage){
           <ngx-charts-bar-vertical
             [results]="articlesTotalResults"
             [xAxis]="true"
             [yAxis]="true"
             [gradient]="true"
-            [scheme]="colorSchemes"
+            [scheme]="tripleColorSchemes"
             [legend]="true"
             [legendPosition]="LegendPosition.Below"
             [trimXAxisTicks]="false"
             [showDataLabel]="true"
             legendTitle="Articles Answers"
           />
-          }
         </div>
+        <div class="chart-container">
+          <ngx-charts-pie-chart
+            [results]="articlesTotalResultsVS"
+            [gradient]="true"
+            [scheme]="dualColorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [doughnut]="true"
+            [labels]="true"
+            legendTitle="Articles Minigame"
+          />
+        </div>
+        }
       </div>
     </ion-segment-content>
     <ion-segment-content id="search-segment">
@@ -89,7 +126,7 @@
             [xAxis]="true"
             [yAxis]="true"
             [gradient]="true"
-            [scheme]="colorSchemesSearch"
+            [scheme]="tripleColorSchemes"
             [legend]="true"
             [legendPosition]="LegendPosition.Below"
             [trimXAxisTicks]="false"
@@ -101,7 +138,7 @@
           <ngx-charts-pie-chart
             [results]="searchTotalResultsVS"
             [gradient]="true"
-            [scheme]="colorSchemes"
+            [scheme]="dualColorSchemes"
             [legend]="true"
             [legendPosition]="LegendPosition.Below"
             [doughnut]="true"
