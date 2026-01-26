@@ -1,4 +1,4 @@
-import{Sa as I,d as u,e as h,g,i as d,j as m,k as R,l,q as f,t as E}from"./chunk-XIUOWS3T.js";var b=(()=>{let s=class s{constructor(){this.http=E(I),this.MAX_RETRIES=50}getAllData(){return this.http.get("https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/export?format=csv",{responseType:"text"}).pipe(u(t=>this.csvToJson(t)))}csvToJson(t){let e=t.split(`
+import{Ua as I,d as u,e as h,g,i as d,j as m,k as R,l,q as f,t as E}from"./chunk-SAHYW55B.js";var b=(()=>{let s=class s{constructor(){this.http=E(I),this.MAX_RETRIES=50}getAllData(){return this.http.get("https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/export?format=csv",{responseType:"text"}).pipe(u(t=>this.csvToJson(t)))}csvToJson(t){let e=t.split(`
 `),r=e[0].split(",");return e.slice(1).map(o=>{let a=o.split(",");return r.reduce((n,c,p)=>(n[c.trim()]=a[p]?.trim(),n),{})})}getMaxId(){let e="https://docs.google.com/spreadsheets/d/1yRrrjbgYoQRKOnXMzhAFIZUgCnulSp8XYKZg3EuG4q0/gviz/tq?tq="+encodeURIComponent(`
     SELECT A
     ORDER BY A DESC
