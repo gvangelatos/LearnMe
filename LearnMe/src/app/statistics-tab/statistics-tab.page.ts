@@ -1,8 +1,12 @@
 import { Component, inject } from '@angular/core';
 import {
+  IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonLabel,
+  IonModal,
   IonSegment,
   IonSegmentButton,
   IonSegmentContent,
@@ -18,6 +22,9 @@ import {
 } from '../utils/constants/global.constants';
 import { Color, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { SegmentsLabels } from './statistics-tab.contants';
+import { addIcons } from 'ionicons';
+import { trashOutline } from 'ionicons/icons';
+import { ClearStatisticsComponent } from './components/clear-statistics/clear-statistics.component';
 
 @Component({
   selector: 'app-statistics-tab',
@@ -34,6 +41,11 @@ import { SegmentsLabels } from './statistics-tab.contants';
     IonSegmentButton,
     IonSegmentView,
     IonSegmentContent,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonModal,
+    ClearStatisticsComponent,
   ],
 })
 export class StatisticsTabPage {
@@ -74,13 +86,21 @@ export class StatisticsTabPage {
   protected searchTotalResultsVS: { name: string; value: number }[] = [];
   protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
 
+  constructor() {
+    addIcons({ trashOutline });
+  }
+
   ionViewDidEnter() {
+    this.getDataFromLocalStorage();
+  }
+
+  protected getDataFromLocalStorage() {
     this.getSwiperPageData();
     this.getArticlesPageData();
     this.getSearchPageData();
   }
 
-  segmentChange(event: any) {
+  protected segmentChange(event: any) {
     this.activeSegment = event.detail.value;
   }
 

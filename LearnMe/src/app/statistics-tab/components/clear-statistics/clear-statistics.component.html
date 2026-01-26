@@ -1,0 +1,52 @@
+<ion-list [inset]="true">
+  <ion-item>
+    <ion-label>Swiper Statistics</ion-label>
+    <ion-button
+      color="danger"
+      fill="outline"
+      slot="end"
+      (click)="setOpen(true, LocalStorageKeysEnum.SwiperPage)"
+    >
+      Clear
+    </ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-label>Articles Statistics</ion-label>
+    <ion-button
+      color="danger"
+      fill="outline"
+      slot="end"
+      (click)="setOpen(true, LocalStorageKeysEnum.ArticlesPage)"
+    >
+      Clear
+    </ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-label>Search Statistics</ion-label>
+    <ion-button
+      color="danger"
+      fill="outline"
+      slot="end"
+      (click)="setOpen(true, LocalStorageKeysEnum.SearchPage)"
+    >
+      Clear
+    </ion-button>
+  </ion-item>
+</ion-list>
+
+<ion-action-sheet
+  header="Are you sure?"
+  [isOpen]="isActionSheetOpen"
+  [buttons]="actionSheetButtons"
+  (didDismiss)="dismissedActionSheet($event)"
+/>
+
+<ion-toast
+  color="success"
+  message="Data Deleted!"
+  swipeGesture="vertical"
+  position="bottom"
+  [isOpen]="isToastOpen"
+  [duration]="5000"
+  (didDismiss)="setToastOpen(false)"
+/>

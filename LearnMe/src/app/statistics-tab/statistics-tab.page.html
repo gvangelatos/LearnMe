@@ -1,6 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> Statistics </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button id="open-modal">
+        <ion-icon
+          color="danger"
+          slot="icon-only"
+          name="trash-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-segment
@@ -151,3 +160,14 @@
     </ion-segment-content>
   </ion-segment-view>
 </ion-content>
+<ion-modal
+  #modal
+  trigger="open-modal"
+  [canDismiss]="true"
+  [initialBreakpoint]="0.5"
+  [breakpoints]="[0, 0.25, 0.5, 0.75]"
+>
+  <ng-template>
+    <app-clear-statistics (dataCleared)="getDataFromLocalStorage()" />
+  </ng-template>
+</ion-modal>

@@ -28,7 +28,7 @@ export class LocalStorageService {
     }
   }
 
-  private removeItem(key: LocalStorageKeysEnum): void {
+  removeItem(key: LocalStorageKeysEnum): void {
     localStorage.removeItem(key);
   }
 
