@@ -29,6 +29,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'translations',
+        loadComponent: () =>
+          import('../translations-tab.page/translations-tab.page').then(
+            (m) => m.TranslationsTabPage,
+          ),
+      },
+      {
         path: '',
         redirectTo: '/tabs/swiper',
         pathMatch: 'full',

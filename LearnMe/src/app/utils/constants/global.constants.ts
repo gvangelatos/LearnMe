@@ -26,6 +26,7 @@ export enum LocalStorageKeysEnum {
   SwiperPage = 'swiperPageStatistics',
   SearchPage = 'searchPageStatistics',
   ArticlesPage = 'articlesPageStatistics',
+  TranslationsPage = 'translationsPageStatistics',
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {

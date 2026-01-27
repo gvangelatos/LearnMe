@@ -62,11 +62,15 @@ export class GsApiService {
     );
   }
 
-  getRandomWords(existingIds?: number[]) {
+  getRandomWords(
+    existingIds?: number[],
+    count: number = 6,
+  ): Observable<WordCardModel[]> {
     return this.getMaxId().pipe(
       switchMap((maxId) => {
         return this.getSpecificWordsData(
-          this.getRandomNumbersInRange(0, maxId, 6, existingIds ?? []),
+          this.getRandomNumbersInRange(0, maxId, count, existingIds ?? []),
+          count,
         );
       }),
     );
@@ -147,11 +151,14 @@ export class GsApiService {
     return Array.from(unique) as number[];
   }
 
-  getSpecificWordsData(positions: number[]) {
-    const query = `
+  getSpecificWordsData(positions: number[], count: number) {
+    let query = `
     SELECT A, B, C, D, E
-    WHERE A = ${positions[0]} OR A = ${positions[1]} OR A = ${positions[2]} OR A = ${positions[3]} OR A = ${positions[4]} OR A = ${positions[5]}
+    WHERE A = ${positions[0]}
   `;
+    for (let i = 1; i < count; i++) {
+      query += `OR A = ${positions[i]}`;
+    }
 
     return this.makeRequest(query);
   }

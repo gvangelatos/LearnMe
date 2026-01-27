@@ -60,29 +60,21 @@ export class Tab1Page implements AfterViewInit {
       .pipe(take(1))
       .subscribe((wordsData) => {
         this.wordCards.set([]);
-        wordsData.forEach(
-          (word: {
-            id: any;
-            article: any;
-            english_translation: any;
-            german_translation: any;
-            isPlural: any;
-          }) => {
-            this.wordCards.update((prevValue) => [
-              ...prevValue,
-              {
-                id: word.id,
-                isUnknown: false,
-                isSwipeRight: false,
-                isSwipeLeft: false,
-                article: word.article,
-                english_translation: word.english_translation,
-                german_translation: word.german_translation,
-                isPlural: word.isPlural,
-              },
-            ]);
-          },
-        );
+        wordsData.forEach((word) => {
+          this.wordCards.update((prevValue) => [
+            ...prevValue,
+            {
+              id: word.id,
+              isUnknown: false,
+              isSwipeRight: false,
+              isSwipeLeft: false,
+              article: word.article,
+              english_translation: word.english_translation,
+              german_translation: word.german_translation,
+              isPlural: word.isPlural,
+            },
+          ]);
+        });
         this.cdr.detectChanges();
         this.useSwipeGesture(this.cards.toArray());
       });
@@ -142,29 +134,21 @@ export class Tab1Page implements AfterViewInit {
         .getRandomWords(this.wordCards().map((x) => +x.id))
         .pipe(take(1))
         .subscribe((wordsData) => {
-          wordsData.forEach(
-            (word: {
-              id: any;
-              article: any;
-              english_translation: any;
-              german_translation: any;
-              isPlural: any;
-            }) => {
-              this.wordCards.update((prevValue) => [
-                {
-                  id: word.id,
-                  isUnknown: false,
-                  isSwipeRight: false,
-                  isSwipeLeft: false,
-                  article: word.article,
-                  english_translation: word.english_translation,
-                  german_translation: word.german_translation,
-                  isPlural: word.isPlural,
-                },
-                ...prevValue,
-              ]);
-            },
-          );
+          wordsData.forEach((word) => {
+            this.wordCards.update((prevValue) => [
+              {
+                id: word.id,
+                isUnknown: false,
+                isSwipeRight: false,
+                isSwipeLeft: false,
+                article: word.article,
+                english_translation: word.english_translation,
+                german_translation: word.german_translation,
+                isPlural: word.isPlural,
+              },
+              ...prevValue,
+            ]);
+          });
           this.cdr.detectChanges();
           this.useSwipeGesture(this.cards.toArray());
         });

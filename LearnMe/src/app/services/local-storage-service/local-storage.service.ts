@@ -49,6 +49,28 @@ export class LocalStorageService {
       : this.applySearchPageIncrement(searchPageStatistics);
   }
 
+  addTranslationsPageSuccess(): void {
+    const translationsPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.TranslationsPage,
+      );
+    this.applyPageSuccess(
+      LocalStorageKeysEnum.TranslationsPage,
+      translationsPageStatistics,
+    );
+  }
+
+  addTranslationsPageFailure(): void {
+    const translationsPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.TranslationsPage,
+      );
+    this.applyPageFailure(
+      LocalStorageKeysEnum.TranslationsPage,
+      translationsPageStatistics,
+    );
+  }
+
   addArticlesPageSuccess(): void {
     const articlesPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.ArticlesPage);

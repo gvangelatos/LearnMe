@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Guess The Articles </ion-title>
+    <ion-title> Guess The Translation </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,43 +16,27 @@
   </ion-refresher>
   <div class="main-container">
     <div class="word-container">
-      <div>
-        <ion-text [color]="getTextColor()">
-          <span class="german-translation">{{word.german_translation}}</span>
-        </ion-text>
-        <ion-button
-          id="click-trigger"
-          class="translation-btn"
-          size="small"
-          fill="outline"
-          shape="round"
-          color="dark"
-          (click)="toggleTranslationShow()"
-        >
-          <ion-icon slot="icon-only" name="language-outline" />
-        </ion-button>
-      </div>
-      <div>
-        <span class="english-translation" [ngClass]="{show: showTranslation}">
-          "{{word.english_translation}}"
+      <ion-text [color]="getTextColor()">
+        <span class="german-translation">
+          {{ word.article ? word.article + ' ' : '' }}{{ word.german_translation
+          }}
         </span>
-      </div>
+      </ion-text>
     </div>
     <div class="question-container">
       <div class="choices">
-        @for (article of ARTICLES; track article + '-' + $index){
+        @for (choice of answers(); track choice + '-' + $index){
         <ion-button
           class="article-btn"
           [disabled]="isLoading"
           [color]="getButtonColor($index)"
-          (click)="answeredClicked(article,$index)"
+          (click)="answeredClicked(choice,$index)"
         >
-          {{ article }}
+          {{ choice | titlecase }}
         </ion-button>
         }
       </div>
     </div>
-
     @if (answered){
     <div class="next-button">
       <ion-button
