@@ -31,6 +31,13 @@
         <ion-label>Articles</ion-label>
       </ion-segment-button>
       <ion-segment-button
+        [value]="SegmentsLabels.TranslationsPage"
+        content-id="translations-segment"
+        [disabled]="true"
+      >
+        <ion-label>Translations</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
         [value]="SegmentsLabels.SearchSegment"
         content-id="search-segment"
         [disabled]="true"
@@ -115,6 +122,44 @@
             [doughnut]="true"
             [labels]="true"
             legendTitle="Articles Minigame"
+          />
+        </div>
+        }
+      </div>
+    </ion-segment-content>
+    <ion-segment-content id="translations-segment">
+      <div class="container">
+        @if (activeSegment === SegmentsLabels.TranslationsPage){
+        <div class="small-margin-bottom-chart-container">
+          <ngx-charts-pie-grid
+            [scheme]="dualColorSchemes"
+            [results]="translationsTotalResultsVS"
+          />
+        </div>
+        <div class="chart-container">
+          <ngx-charts-bar-vertical
+            [results]="translationsTotalResults"
+            [xAxis]="true"
+            [yAxis]="true"
+            [gradient]="true"
+            [scheme]="tripleColorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [trimXAxisTicks]="false"
+            [showDataLabel]="true"
+            legendTitle="Translations Answers"
+          />
+        </div>
+        <div class="chart-container">
+          <ngx-charts-pie-chart
+            [results]="translationsTotalResultsVS"
+            [gradient]="true"
+            [scheme]="dualColorSchemes"
+            [legend]="true"
+            [legendPosition]="LegendPosition.Below"
+            [doughnut]="true"
+            [labels]="true"
+            legendTitle="Translations Minigame"
           />
         </div>
         }

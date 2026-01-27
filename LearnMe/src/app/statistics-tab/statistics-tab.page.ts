@@ -51,7 +51,7 @@ import { ClearStatisticsComponent } from './components/clear-statistics/clear-st
 export class StatisticsTabPage {
   private readonly localStorageService = inject(LocalStorageService);
   private swiperPageData?: PageLocalStorageDataType;
-  private articlesPageData?: PageLocalStorageDataType;
+  private translationsPageData?: PageLocalStorageDataType;
   private searchPageData?: SearchPageLocalStorageDataType;
   protected readonly dualColorSchemes = {
     domain: [
@@ -82,6 +82,8 @@ export class StatisticsTabPage {
   protected swiperTotalResultsVS: { name: string; value: number }[] = [];
   protected articlesTotalResults: { name: string; value: number }[] = [];
   protected articlesTotalResultsVS: { name: string; value: number }[] = [];
+  protected translationsTotalResults: { name: string; value: number }[] = [];
+  protected translationsTotalResultsVS: { name: string; value: number }[] = [];
   protected searchTotalResults: { name: string; value: number }[] = [];
   protected searchTotalResultsVS: { name: string; value: number }[] = [];
   protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
@@ -98,6 +100,7 @@ export class StatisticsTabPage {
     this.getSwiperPageData();
     this.getArticlesPageData();
     this.getSearchPageData();
+    this.getTranslationsPageData();
   }
 
   protected segmentChange(event: any) {
@@ -136,8 +139,41 @@ export class StatisticsTabPage {
     ];
   }
 
+  protected getTranslationsPageData() {
+    this.translationsPageData =
+      this.localStorageService.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.TranslationsPage,
+      );
+    this.translationsTotalResults = [
+      {
+        name: 'Total Rounds',
+        value:
+          this.translationsPageData.totalSuccesses +
+          this.translationsPageData.totalFails,
+      },
+      {
+        name: 'Right Answers',
+        value: this.translationsPageData.totalSuccesses,
+      },
+      {
+        name: 'Wrong Answers',
+        value: this.translationsPageData.totalFails,
+      },
+    ];
+    this.translationsTotalResultsVS = [
+      {
+        name: 'Right Answers',
+        value: this.translationsPageData.totalSuccesses,
+      },
+      {
+        name: 'Wrong Answers',
+        value: this.translationsPageData.totalFails,
+      },
+    ];
+  }
+
   protected getArticlesPageData() {
-    this.articlesPageData =
+    this.translationsPageData =
       this.localStorageService.handleLocalStorageDataRetrieval(
         LocalStorageKeysEnum.ArticlesPage,
       );
@@ -145,26 +181,26 @@ export class StatisticsTabPage {
       {
         name: 'Total Rounds',
         value:
-          this.articlesPageData.totalSuccesses +
-          this.articlesPageData.totalFails,
+          this.translationsPageData.totalSuccesses +
+          this.translationsPageData.totalFails,
       },
       {
         name: 'Right Answers',
-        value: this.articlesPageData.totalSuccesses,
+        value: this.translationsPageData.totalSuccesses,
       },
       {
         name: 'Wrong Answers',
-        value: this.articlesPageData.totalFails,
+        value: this.translationsPageData.totalFails,
       },
     ];
     this.articlesTotalResultsVS = [
       {
         name: 'Right Answers',
-        value: this.articlesPageData.totalSuccesses,
+        value: this.translationsPageData.totalSuccesses,
       },
       {
         name: 'Wrong Answers',
-        value: this.articlesPageData.totalFails,
+        value: this.translationsPageData.totalFails,
       },
     ];
   }

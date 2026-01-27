@@ -22,6 +22,17 @@
     </ion-button>
   </ion-item>
   <ion-item>
+    <ion-label>Translations Statistics</ion-label>
+    <ion-button
+      color="danger"
+      fill="outline"
+      slot="end"
+      (click)="setOpen(true, LocalStorageKeysEnum.TranslationsPage)"
+    >
+      Clear
+    </ion-button>
+  </ion-item>
+  <ion-item>
     <ion-label>Search Statistics</ion-label>
     <ion-button
       color="danger"
