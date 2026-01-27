@@ -41,12 +41,13 @@
     <div class="next-button">
       <ion-button
         class="next"
-        color="secondary"
+        [color]="getTextColor()"
         shape="round"
         [disabled]="isLoading"
         (click)="handleRefresh()"
       >
-        <ion-icon slot="icon-only" name="arrow-forward-outline" />
+        Next
+        <ion-icon slot="end" name="arrow-forward-outline" />
       </ion-button>
     </div>
     }
