@@ -64,7 +64,7 @@ export class GsApiService {
 
   getRandomWords(
     existingIds?: number[],
-    count: number = 6,
+    count: number = 4,
   ): Observable<WordCardModel[]> {
     return this.getMaxId().pipe(
       switchMap((maxId) => {

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
-  @if (!word || isLoading) {
+  @if (!wordSets().length) {
   <div class="spinner-container">
     <ion-label>Getting you a word...</ion-label>
     <ion-spinner name="lines-sharp" />
@@ -18,17 +18,15 @@
     <div class="word-container">
       <ion-text [color]="getTextColor()">
         <span class="german-translation">
-          {{ word.article ? word.article + ' ' : '' }}{{ word.german_translation
-          }}
+          {{ wordSets()[0].words[0].article ? wordSets()[0].words[0].article + ' ' : '' }}{{ wordSets()[0].words[0].german_translation }}
         </span>
       </ion-text>
     </div>
     <div class="question-container">
       <div class="choices">
-        @for (choice of answers(); track choice + '-' + $index){
+        @for (choice of wordSets()[0].answers; track choice + '-' + $index){
         <ion-button
           class="article-btn"
-          [disabled]="isLoading"
           [color]="getButtonColor($index)"
           (click)="answeredClicked(choice,$index)"
         >
@@ -43,7 +41,6 @@
         class="next"
         [color]="getTextColor()"
         shape="round"
-        [disabled]="isLoading"
         (click)="handleRefresh()"
       >
         Next

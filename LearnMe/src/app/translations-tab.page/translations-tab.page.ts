@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -17,9 +17,11 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 import { WordCardModel } from '../swiper-tab/tab1.models';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline, languageOutline } from 'ionicons/icons';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { UtilityService } from '../services/utility/utility.service';
+
+const WORDS_SETS_LENGTH: number = 3;
 
 @Component({
   selector: 'app-translations-tab.page',
@@ -44,69 +46,74 @@ export class TranslationsTabPage {
   private readonly gsApiService = inject(GsApiService);
   private readonly utilityService = inject(UtilityService);
   private readonly localStorageService = inject(LocalStorageService);
-  protected word?: WordCardModel;
+  protected wordSets = signal<
+    {
+      words: WordCardModel[];
+      answers: string[];
+      correctAnswer: number;
+    }[]
+  >([]);
   protected isCorrect: boolean = false;
   protected answered: boolean = false;
-  protected isLoading: boolean = false;
   protected chosenAnswer?: number;
-  protected correctAnswer?: number;
-  protected wordCards = signal<WordCardModel[]>([]);
-  protected readonly answers = signal<string[]>([]);
 
   constructor() {
     addIcons({ languageOutline, arrowForwardOutline });
-    this.isLoading = true;
-    this.makeWordCall();
+    effect(() => {
+      if (this.wordSets().length < WORDS_SETS_LENGTH) {
+        this.getWordsSet();
+      }
+    });
   }
 
-  private makeWordCall() {
+  private getWordsSet() {
     this.gsApiService
-      .getRandomWords(
-        this.wordCards().map((x) => +x.id),
-        4,
+      .getRandomWords()
+      .pipe(
+        map((words) => {
+          const answers = this.utilityService.shuffleArray(
+            words.map((x) => x.english_translation),
+          );
+          const correctAnswer = answers.findIndex(
+            (answer) =>
+              answer.toLowerCase() ===
+              words[0]?.english_translation?.toLowerCase(),
+          );
+          return {
+            words,
+            answers,
+            correctAnswer,
+          };
+        }),
+        take(1),
       )
-      .pipe(take(1))
       .subscribe({
         next: (result) => {
-          this.answers.set(
-            this.utilityService.shuffleArray(
-              result.map((x) => x.english_translation),
-            ),
-          );
-
-          this.isLoading = false;
-          if (result.length) {
-            this.word = result[0];
-            this.correctAnswer = this.answers().findIndex(
-              (answer) =>
-                answer.toLowerCase() ===
-                this.word?.english_translation?.toLowerCase(),
-            );
-          }
+          this.wordSets.update((sets) => {
+            sets.push(result);
+            return [...sets];
+          });
+          console.log(this.wordSets());
         },
-        error: (error) => {
-          this.isLoading = false;
-        },
+        error: (error) => {},
       });
   }
 
   private resetQuestion() {
     this.isCorrect = false;
     this.answered = false;
-    this.correctAnswer = undefined;
     this.chosenAnswer = undefined;
-    this.word = undefined;
-    this.answers.set([]);
-    this.wordCards.set([]);
+    this.wordSets.update((sets) => sets.splice(1));
   }
 
   protected answeredClicked(answer: string, index: number) {
-    if (!this.word || this.answered) {
+    if (!this.wordSets()[0].words[0] || this.answered) {
       return;
     }
     this.chosenAnswer = index;
     if (
-      answer.toLowerCase() === this.word?.english_translation?.toLowerCase()
+      answer.toLowerCase() ===
+      this.wordSets()[0].words[0]?.english_translation?.toLowerCase()
     ) {
       this.handleAnswer(true);
     } else {
@@ -126,7 +133,7 @@ export class TranslationsTabPage {
     if (!this.answered) {
       return 'dark';
     }
-    if (index === this.correctAnswer) {
+    if (index === this.wordSets()[0].correctAnswer) {
       return 'success';
     }
     if (index === this.chosenAnswer) {
@@ -148,6 +155,5 @@ export class TranslationsTabPage {
 
   protected handleRefresh() {
     this.resetQuestion();
-    this.makeWordCall();
   }
 }
