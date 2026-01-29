@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -42,40 +42,41 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 export class Tab2Page {
   private readonly gsApiService = inject(GsApiService);
   private readonly localStorageService = inject(LocalStorageService);
-  protected word?: WordCardModel;
+  protected words = signal<WordCardModel[]>([]);
   protected isCorrect: boolean = false;
   protected answered: boolean = false;
-  protected isLoading: boolean = false;
   protected chosenAnswer?: number;
   protected correctAnswer?: number;
   protected showTranslation: boolean = false;
 
   constructor() {
     addIcons({ languageOutline, arrowForwardOutline });
-    this.isLoading = true;
-    this.makeWordCall();
+    effect(() => {
+      if (this.words().length < 3) {
+        this.makeWordCall();
+      }
+    });
   }
 
   private makeWordCall() {
-    this.isLoading = true;
-    this.gsApiService.getRandomWordWithArticle().subscribe((x) => {
-      if (x.length) {
-        this.word = x[0];
+    this.gsApiService.getRandomWordsWithArticle(10).subscribe({
+      next: (words) => {
+        this.words.update((oldWords) => oldWords.concat(words));
         this.setCorrectWord();
-      }
-      this.isLoading = false;
+      },
+      error: (err) => {},
     });
   }
 
   private setCorrectWord() {
-    if (this.word?.isPlural) {
+    if (this.words()[0]?.isPlural) {
       this.correctAnswer = 3;
     } else {
       const articles_single = ARTICLES.filter(
         (x) => !x.toLowerCase().includes('plural'),
       );
       const index = articles_single.findIndex((x) =>
-        this.word?.article?.toLowerCase().includes(x.toLowerCase()),
+        this.words()[0]?.article?.toLowerCase().includes(x.toLowerCase()),
       );
       if (index > -1) {
         this.correctAnswer = index;
@@ -84,14 +85,14 @@ export class Tab2Page {
   }
 
   protected answeredClicked(article: string, index: number) {
-    if (!this.word || this.answered) {
+    if (!this.words()[0] || this.answered) {
       return;
     }
     this.chosenAnswer = index;
-    if (article.toLowerCase().includes('plural') && this.word.isPlural) {
+    if (article.toLowerCase().includes('plural') && this.words()[0].isPlural) {
       this.handleAnswer(true);
     } else if (
-      this.word.article?.toLowerCase().includes(article.toLowerCase())
+      this.words()[0].article?.toLowerCase().includes(article.toLowerCase())
     ) {
       this.handleAnswer(true);
     } else {
@@ -124,12 +125,13 @@ export class Tab2Page {
   }
 
   private resetQuestion() {
+    this.showTranslation = false;
     this.isCorrect = false;
     this.answered = false;
     this.correctAnswer = undefined;
     this.chosenAnswer = undefined;
-    this.showTranslation = false;
-    this.word = undefined;
+    this.words.update((words) => words.slice(1));
+    this.setCorrectWord();
   }
 
   protected readonly ARTICLES = ARTICLES;
@@ -150,6 +152,5 @@ export class Tab2Page {
 
   protected handleRefresh() {
     this.resetQuestion();
-    this.makeWordCall();
   }
 }

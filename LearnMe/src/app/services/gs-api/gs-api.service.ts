@@ -89,6 +89,46 @@ export class GsApiService {
     );
   }
 
+  getRandomWordsWithArticle(numberOfWords: number = 1): Observable<any> {
+    return this.fetchAllIDsWithArticles().pipe(
+      map((words) => words.map((word: { id: string }) => +word.id)),
+      switchMap((availableIDs) => {
+        return this.getSpecificWordsData(
+          this.selectRandomNumbers(availableIDs, numberOfWords),
+          numberOfWords,
+        );
+      }),
+      take(1),
+    );
+  }
+
+  private selectRandomNumbers(
+    numbers: number[],
+    numberOfSelections: number,
+    exclude: number[] = [],
+  ): number[] {
+    const availableNumbers = numbers.filter((num) => !exclude.includes(num));
+
+    const pool = [...availableNumbers];
+    const selected: number[] = [];
+
+    for (let i = 0; i < numberOfSelections; i++) {
+      const randomIndex = Math.floor(Math.random() * pool.length);
+      selected.push(pool[randomIndex]);
+      pool.splice(randomIndex, 1);
+    }
+
+    return selected;
+  }
+
+  private fetchAllIDsWithArticles(): Observable<any> {
+    const query = `
+      SELECT A
+      WHERE D IS NOT NULL
+    `;
+    return this.makeRequest(query);
+  }
+
   private fetchRandomOnce(maxRows: number) {
     const offset = Math.floor(Math.random() * maxRows);
 
@@ -151,7 +191,7 @@ export class GsApiService {
     return Array.from(unique) as number[];
   }
 
-  getSpecificWordsData(positions: number[], count: number) {
+  private getSpecificWordsData(positions: number[], count: number) {
     let query = `
     SELECT A, B, C, D, E
     WHERE A = ${positions[0]}

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
-  @if (!word || isLoading) {
+  @if (!words().length) {
   <div class="spinner-container">
     <ion-label>Getting you a word...</ion-label>
     <ion-spinner name="lines-sharp" />
@@ -18,7 +18,9 @@
     <div class="word-container">
       <div>
         <ion-text [color]="getTextColor()">
-          <span class="german-translation">{{word.german_translation}}</span>
+          <span class="german-translation"
+            >{{words()[0].german_translation}}</span
+          >
         </ion-text>
         <ion-button
           id="click-trigger"
@@ -34,7 +36,7 @@
       </div>
       <div>
         <span class="english-translation" [ngClass]="{show: showTranslation}">
-          "{{word.english_translation}}"
+          "{{words()[0].english_translation}}"
         </span>
       </div>
     </div>
@@ -43,7 +45,6 @@
         @for (article of ARTICLES; track article + '-' + $index){
         <ion-button
           class="article-btn"
-          [disabled]="isLoading"
           [color]="getButtonColor($index)"
           (click)="answeredClicked(article,$index)"
         >
@@ -59,7 +60,6 @@
         class="next"
         [color]="getTextColor()"
         shape="round"
-        [disabled]="isLoading"
         (click)="handleRefresh()"
       >
         Next
