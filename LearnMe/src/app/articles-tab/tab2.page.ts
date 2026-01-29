@@ -11,6 +11,7 @@ import {
   IonText,
   IonRefresher,
   IonRefresherContent,
+  IonModal,
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { WordCardModel } from '../swiper-tab/tab1.models';
@@ -37,6 +38,7 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
     IonText,
     IonRefresher,
     IonRefresherContent,
+    IonModal,
   ],
 })
 export class Tab2Page {

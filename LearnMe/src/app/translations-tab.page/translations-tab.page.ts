@@ -1,10 +1,12 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
   IonLabel,
+  IonModal,
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
@@ -20,6 +22,7 @@ import { arrowForwardOutline, languageOutline } from 'ionicons/icons';
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { UtilityService } from '../services/utility/utility.service';
+import { ClearStatisticsComponent } from '../statistics-tab/components/clear-statistics/clear-statistics.component';
 
 const WORDS_SETS_LENGTH: number = 3;
 
@@ -40,6 +43,9 @@ const WORDS_SETS_LENGTH: number = 3;
     IonButton,
     TitleCasePipe,
     IonIcon,
+    ClearStatisticsComponent,
+    IonModal,
+    IonButtons,
   ],
 })
 export class TranslationsTabPage {
@@ -58,7 +64,7 @@ export class TranslationsTabPage {
   protected chosenAnswer?: number;
 
   constructor() {
-    addIcons({ languageOutline, arrowForwardOutline });
+    addIcons({ arrowForwardOutline });
     effect(() => {
       if (this.wordSets().length < WORDS_SETS_LENGTH) {
         this.getWordsSet();

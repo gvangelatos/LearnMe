@@ -53,20 +53,28 @@
         }
       </div>
     </div>
-
-    @if (answered){
-    <div class="next-button">
-      <ion-button
-        class="next"
-        [color]="getTextColor()"
-        shape="round"
-        (click)="handleRefresh()"
-      >
-        Next
-        <ion-icon slot="end" name="arrow-forward-outline" />
-      </ion-button>
-    </div>
-    }
   </div>
   }
 </ion-content>
+
+<ion-modal
+  #modal
+  trigger="open-modal"
+  [isOpen]="answered"
+  [keyboardClose]="false"
+  [backdropDismiss]="false"
+  [handle]="false"
+  [draggable]="false"
+  [initialBreakpoint]="0.15"
+>
+  <ng-template>
+    <ion-button
+      class="next"
+      [color]="getTextColor()"
+      shape="round"
+      (click)="handleRefresh()"
+    >
+      Next
+    </ion-button>
+  </ng-template>
+</ion-modal>
