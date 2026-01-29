@@ -14,7 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
-import { WordCardModel } from '../tab1/tab1.models';
+import { WordCardModel } from '../swiper-tab/tab1.models';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline, languageOutline } from 'ionicons/icons';
 import { take } from 'rxjs';

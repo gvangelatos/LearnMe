@@ -11,7 +11,7 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { WordCardModel } from '../../tab1/tab1.models';
+import { WordCardModel } from '../../swiper-tab/tab1.models';
 
 @Injectable({
   providedIn: 'root',

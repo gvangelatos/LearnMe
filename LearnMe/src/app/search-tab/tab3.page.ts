@@ -16,11 +16,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, filter, of, switchMap, tap } from 'rxjs';
 import { GsApiService } from '../services/gs-api/gs-api.service';
-import { WordCardModel } from '../tab1/tab1.models';
+import { WordCardModel } from '../swiper-tab/tab1.models';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 
 @Component({
-  selector: 'app-tab3',
+  selector: 'app-search-tab',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   imports: [

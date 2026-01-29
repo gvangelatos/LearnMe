@@ -9,17 +9,17 @@ export const routes: Routes = [
       {
         path: 'swiper',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../swiper-tab/tab1.page').then((m) => m.Tab1Page),
       },
       {
         path: 'articles',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../articles-tab/tab2.page').then((m) => m.Tab2Page),
       },
       {
         path: 'search',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../search-tab/tab3.page').then((m) => m.Tab3Page),
       },
       {
         path: 'statistics',

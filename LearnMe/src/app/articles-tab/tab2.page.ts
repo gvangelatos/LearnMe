@@ -13,7 +13,7 @@ import {
   IonRefresherContent,
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
-import { WordCardModel } from '../tab1/tab1.models';
+import { WordCardModel } from '../swiper-tab/tab1.models';
 import { ARTICLES } from './articles-page.constants';
 import { addIcons } from 'ionicons';
 import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
@@ -21,7 +21,7 @@ import { NgClass } from '@angular/common';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 
 @Component({
-  selector: 'app-tab2',
+  selector: 'app-articles-tab',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   imports: [
