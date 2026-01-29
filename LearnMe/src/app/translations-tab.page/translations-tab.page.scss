@@ -26,9 +26,9 @@ ion-card-content {
   --box-shadow: 3px 5px #888;
 }
 
-.next{
+.next {
   font-weight: bold;
-  margin-top: 24px;
+  margin: 12px;
 }
 
 .translation-btn {
@@ -44,7 +44,7 @@ ion-card-content {
   position: relative;
 }
 
-.next-button{
+.next-button {
   position: absolute;
   bottom: 8px;
   right: 8px;
@@ -76,4 +76,40 @@ ion-card-content {
   height: 100%;
   justify-content: center;
   gap: 8px;
+}
+
+.gelatin {
+  animation: gelatin 0.3s linear;
+}
+@keyframes gelatin {
+  from,
+  to {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.9, 1.1);
+  }
+  50% {
+    transform: scale(1.1, 0.9);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+}
+
+.shake {
+  animation: shake .5s ease;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25%,
+  75% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
 }

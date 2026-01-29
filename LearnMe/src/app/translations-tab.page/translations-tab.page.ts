@@ -1,10 +1,8 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonLabel,
   IonModal,
   IonRefresher,
@@ -22,7 +20,6 @@ import { arrowForwardOutline, languageOutline } from 'ionicons/icons';
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { UtilityService } from '../services/utility/utility.service';
-import { ClearStatisticsComponent } from '../statistics-tab/components/clear-statistics/clear-statistics.component';
 
 const WORDS_SETS_LENGTH: number = 3;
 
@@ -42,10 +39,7 @@ const WORDS_SETS_LENGTH: number = 3;
     IonText,
     IonButton,
     TitleCasePipe,
-    IonIcon,
-    ClearStatisticsComponent,
     IonModal,
-    IonButtons,
   ],
 })
 export class TranslationsTabPage {
@@ -61,6 +55,7 @@ export class TranslationsTabPage {
   >([]);
   protected isCorrect: boolean = false;
   protected answered: boolean = false;
+  protected chosen: boolean = false;
   protected chosenAnswer?: number;
 
   constructor() {
@@ -96,19 +91,19 @@ export class TranslationsTabPage {
       .subscribe({
         next: (result) => {
           this.wordSets.update((sets) => {
-            sets.push(result);
+            sets.push({ ...result });
             return [...sets];
           });
-          console.log(this.wordSets());
         },
         error: (error) => {},
       });
   }
 
   private resetQuestion() {
-    this.isCorrect = false;
+    this.chosen = false;
     this.answered = false;
     this.chosenAnswer = undefined;
+    this.isCorrect = false;
     this.wordSets.update((sets) => sets.splice(1));
   }
 
@@ -117,9 +112,14 @@ export class TranslationsTabPage {
       return;
     }
     this.chosenAnswer = index;
+    this.chosen = true;
+  }
+
+  protected checkAnswer() {
     if (
-      answer.toLowerCase() ===
-      this.wordSets()[0].words[0]?.english_translation?.toLowerCase()
+      typeof this.chosenAnswer === 'number' &&
+      this.wordSets()[0].answers[this.chosenAnswer].toLowerCase() ===
+        this.wordSets()[0].words[0]?.english_translation?.toLowerCase()
     ) {
       this.handleAnswer(true);
     } else {
@@ -136,10 +136,17 @@ export class TranslationsTabPage {
   }
 
   protected getButtonColor(index: number) {
-    if (!this.answered) {
+    if (!this.answered && !this.chosen) {
       return 'dark';
     }
-    if (index === this.wordSets()[0].correctAnswer) {
+    if (this.chosen && !this.answered && index === this.chosenAnswer) {
+      return 'warning';
+    }
+    if (
+      index === this.wordSets()[0].correctAnswer &&
+      this.answered &&
+      this.chosen
+    ) {
       return 'success';
     }
     if (index === this.chosenAnswer) {

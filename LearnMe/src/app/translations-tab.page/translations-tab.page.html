@@ -17,16 +17,18 @@
   <div class="main-container">
     <div class="word-container">
       <ion-text [color]="getTextColor()">
-        <span class="german-translation">
+        <div
+          [class]="{'german-translation':true,'shake': !isCorrect && answered }"
+        >
           {{ wordSets()[0].words[0].article ? wordSets()[0].words[0].article + ' ' : '' }}{{ wordSets()[0].words[0].german_translation }}
-        </span>
+        </div>
       </ion-text>
     </div>
     <div class="question-container">
       <div class="choices">
         @for (choice of wordSets()[0].answers; track choice + '-' + $index){
         <ion-button
-          class="article-btn"
+          [class]="{'article-btn':true,'gelatin': chosenAnswer === $index}"
           [color]="getButtonColor($index)"
           (click)="answeredClicked(choice,$index)"
         >
@@ -42,21 +44,24 @@
 <ion-modal
   #modal
   trigger="open-modal"
-  [isOpen]="answered"
+  [isOpen]="chosen"
   [keyboardClose]="false"
   [backdropDismiss]="false"
   [handle]="false"
   [draggable]="false"
   [initialBreakpoint]="0.15"
+  [breakpoints]="[0.15, 0.5]"
+  [backdropBreakpoint]="0.5"
 >
   <ng-template>
-      <ion-button
-        class="next"
-        [color]="getTextColor()"
-        shape="round"
-        (click)="handleRefresh()"
-      >
-        Next
-      </ion-button>
+    <ion-button
+      shape="round"
+      [disabled]="!answered && !chosen"
+      [class]="{'next':true,'gelatin': answered}"
+      [color]="getTextColor()"
+      (click)="answered ? handleRefresh() : checkAnswer()"
+    >
+      {{answered ? 'Next' : 'Check'}}
+    </ion-button>
   </ng-template>
 </ion-modal>
