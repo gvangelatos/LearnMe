@@ -50,6 +50,7 @@ export class Tab2Page {
   protected chosenAnswer?: number;
   protected correctAnswer?: number;
   protected showTranslation: boolean = false;
+  protected chosen: boolean = false;
 
   constructor() {
     addIcons({ languageOutline, arrowForwardOutline });
@@ -61,7 +62,7 @@ export class Tab2Page {
   }
 
   private makeWordCall() {
-    this.gsApiService.getRandomWordsWithArticle(10).subscribe({
+    this.gsApiService.getRandomWordsWithArticle(5).subscribe({
       next: (words) => {
         this.words.update((oldWords) => oldWords.concat(words));
         this.setCorrectWord();
@@ -91,10 +92,26 @@ export class Tab2Page {
       return;
     }
     this.chosenAnswer = index;
-    if (article.toLowerCase().includes('plural') && this.words()[0].isPlural) {
+    this.chosen = true;
+  }
+
+  protected checkAnswer() {
+    if (!this.chosen) {
+      return;
+    }
+    this.answered = true;
+    if (
+      typeof this.chosenAnswer === 'number' &&
+      ARTICLES[this.chosenAnswer].toLowerCase().includes('plural') &&
+      this.words()[0].isPlural
+    ) {
       this.handleAnswer(true);
     } else if (
-      this.words()[0].article?.toLowerCase().includes(article.toLowerCase())
+      typeof this.chosenAnswer === 'number' &&
+      this.words()[0]
+        .article?.toLowerCase()
+        .includes(ARTICLES[this.chosenAnswer].toLowerCase()) &&
+      !this.words()[0].isPlural
     ) {
       this.handleAnswer(true);
     } else {
@@ -127,6 +144,7 @@ export class Tab2Page {
   }
 
   private resetQuestion() {
+    this.chosen = false;
     this.showTranslation = false;
     this.isCorrect = false;
     this.answered = false;
@@ -139,16 +157,18 @@ export class Tab2Page {
   protected readonly ARTICLES = ARTICLES;
 
   protected getButtonColor(index: number) {
-    if (!this.answered) {
+    if (!this.answered && !this.chosen) {
       return 'dark';
     }
-    if (index === this.correctAnswer) {
+    if (this.chosen && !this.answered && index === this.chosenAnswer) {
+      return 'warning';
+    }
+    if (index === this.correctAnswer && this.answered && this.chosen) {
       return 'success';
     }
     if (index === this.chosenAnswer) {
       return 'danger';
     }
-
     return 'dark';
   }
 

@@ -116,6 +116,10 @@ export class TranslationsTabPage {
   }
 
   protected checkAnswer() {
+    if (!this.chosen) {
+      return;
+    }
+    this.answered = true;
     if (
       typeof this.chosenAnswer === 'number' &&
       this.wordSets()[0].answers[this.chosenAnswer].toLowerCase() ===

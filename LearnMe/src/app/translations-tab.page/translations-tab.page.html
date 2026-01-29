@@ -20,7 +20,8 @@
         <div
           [class]="{'german-translation':true,'shake': !isCorrect && answered }"
         >
-          {{ wordSets()[0].words[0].article ? wordSets()[0].words[0].article + ' ' : '' }}{{ wordSets()[0].words[0].german_translation }}
+          {{ wordSets()[0].words[0].article ? wordSets()[0].words[0].article + '
+          ' : '' }}{{ wordSets()[0].words[0].german_translation }}
         </div>
       </ion-text>
     </div>
@@ -54,6 +55,7 @@
   [backdropBreakpoint]="0.5"
 >
   <ng-template>
+    @if (chosen) {
     <ion-button
       shape="round"
       [disabled]="!answered && !chosen"
@@ -63,5 +65,6 @@
     >
       {{answered ? 'Next' : 'Check'}}
     </ion-button>
+    }
   </ng-template>
 </ion-modal>

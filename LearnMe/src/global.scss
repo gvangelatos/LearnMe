@@ -56,6 +56,42 @@ $color-text-med-light: #d9dce1;
 $color-text-light: #f0f1f6;
 $color-text-lighter: #fff;
 
+.gelatin {
+  animation: gelatin 0.3s linear;
+}
+@keyframes gelatin {
+  from,
+  to {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.9, 1.1);
+  }
+  50% {
+    transform: scale(1.1, 0.9);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+}
+
+.shake {
+  animation: shake .5s ease;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25%,
+  75% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root.ios,
   :root.md {

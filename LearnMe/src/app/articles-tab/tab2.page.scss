@@ -21,14 +21,21 @@ ion-card-content {
   flex-direction: column;
 }
 
+.word-icon-container{
+  display: flex;
+  gap: 4px;
+}
+
 .article-btn {
   font-weight: bold;
   --box-shadow: 3px 5px #888;
 }
 
-.next{
+.next {
   font-weight: bold;
+  margin: 12px;
 }
+
 .translation-btn {
   margin-bottom: 22px;
   font-size: 10px;

@@ -16,11 +16,13 @@
   </ion-refresher>
   <div class="main-container">
     <div class="word-container">
-      <div>
+      <div class="word-icon-container">
         <ion-text [color]="getTextColor()">
-          <span class="german-translation"
-            >{{words()[0].german_translation}}</span
+          <div
+            [class]="{'german-translation':true,'shake': !isCorrect && answered }"
           >
+            {{words()[0].german_translation}}
+          </div>
         </ion-text>
         <ion-button
           id="click-trigger"
@@ -44,7 +46,7 @@
       <div class="choices">
         @for (article of ARTICLES; track article + '-' + $index){
         <ion-button
-          class="article-btn"
+          [class]="{'article-btn':true,'gelatin': chosenAnswer === $index}"
           [color]="getButtonColor($index)"
           (click)="answeredClicked(article,$index)"
         >
@@ -60,21 +62,26 @@
 <ion-modal
   #modal
   trigger="open-modal"
-  [isOpen]="answered"
+  [isOpen]="chosen"
   [keyboardClose]="false"
   [backdropDismiss]="false"
   [handle]="false"
   [draggable]="false"
   [initialBreakpoint]="0.15"
+  [breakpoints]="[0.15, 0.5]"
+  [backdropBreakpoint]="0.5"
 >
   <ng-template>
+    @if (chosen) {
     <ion-button
-      class="next"
-      [color]="getTextColor()"
       shape="round"
-      (click)="handleRefresh()"
+      [disabled]="!chosen && !answered"
+      [class]="{'next':true,'gelatin': answered}"
+      [color]="getTextColor()"
+      (click)="answered ? handleRefresh() : checkAnswer()"
     >
-      Next
+      {{answered ? 'Next' : 'Check'}}
     </ion-button>
+    }
   </ng-template>
 </ion-modal>
