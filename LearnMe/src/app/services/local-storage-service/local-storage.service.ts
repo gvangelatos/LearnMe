@@ -13,12 +13,12 @@ import {
   providedIn: 'root',
 })
 export class LocalStorageService {
-  private setItem(key: LocalStorageKeysEnum, value: any): void {
+  setItem(key: LocalStorageKeysEnum, value: any): void {
     const jsonValue = JSON.stringify(value);
     localStorage.setItem(key, jsonValue);
   }
 
-  private getItem<T>(key: LocalStorageKeysEnum): T | null {
+  getItem<T>(key: LocalStorageKeysEnum): T | null {
     try {
       const value = localStorage.getItem(key);
       return value ? JSON.parse(value) : null;

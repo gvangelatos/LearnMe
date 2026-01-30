@@ -1,25 +1,32 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
+  IonItem,
   IonLabel,
+  IonList,
   IonModal,
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
   IonText,
   IonTitle,
+  IonToggle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { WordCardModel } from '../swiper-tab/tab1.models';
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline, languageOutline } from 'ionicons/icons';
+import { arrowForwardOutline, settingsOutline } from 'ionicons/icons';
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { UtilityService } from '../services/utility/utility.service';
+import { FormsModule } from '@angular/forms';
+import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 
 const WORDS_SETS_LENGTH: number = 3;
 
@@ -40,6 +47,12 @@ const WORDS_SETS_LENGTH: number = 3;
     IonButton,
     TitleCasePipe,
     IonModal,
+    IonButtons,
+    IonIcon,
+    IonList,
+    IonItem,
+    IonToggle,
+    FormsModule,
   ],
 })
 export class TranslationsTabPage {
@@ -57,9 +70,11 @@ export class TranslationsTabPage {
   protected answered: boolean = false;
   protected chosen: boolean = false;
   protected chosenAnswer?: number;
+  protected germanEnabled: boolean = false;
 
   constructor() {
-    addIcons({ arrowForwardOutline });
+    this.getIsGermanEnabledStorageData();
+    addIcons({ arrowForwardOutline, settingsOutline });
     effect(() => {
       if (this.wordSets().length < WORDS_SETS_LENGTH) {
         this.getWordsSet();
@@ -67,19 +82,49 @@ export class TranslationsTabPage {
     });
   }
 
+  private getIsGermanEnabledStorageData() {
+    const isGermanEnabledStorageData =
+      this.localStorageService.getItem<boolean>(
+        LocalStorageKeysEnum.GermanEnabled,
+      );
+    if (isGermanEnabledStorageData === null) {
+      this.germanEnabled = false;
+      this.localStorageService.setItem(
+        LocalStorageKeysEnum.GermanEnabled,
+        false,
+      );
+    } else {
+      this.germanEnabled = isGermanEnabledStorageData;
+    }
+  }
+
   private getWordsSet() {
     this.gsApiService
       .getRandomWords()
       .pipe(
         map((words) => {
-          const answers = this.utilityService.shuffleArray(
-            words.map((x) => x.english_translation),
-          );
-          const correctAnswer = answers.findIndex(
-            (answer) =>
-              answer.toLowerCase() ===
-              words[0]?.english_translation?.toLowerCase(),
-          );
+          let answers: string[];
+          let correctAnswer: number;
+          if (this.germanEnabled) {
+            answers = this.utilityService.shuffleArray(
+              words.map((x) => x.german_translation),
+            );
+            correctAnswer = answers.findIndex(
+              (answer) =>
+                answer.toLowerCase() ===
+                words[0]?.german_translation?.toLowerCase(),
+            );
+          } else {
+            answers = this.utilityService.shuffleArray(
+              words.map((x) => x.english_translation),
+            );
+            correctAnswer = answers.findIndex(
+              (answer) =>
+                answer.toLowerCase() ===
+                words[0]?.english_translation?.toLowerCase(),
+            );
+          }
+
           return {
             words,
             answers,
@@ -122,8 +167,7 @@ export class TranslationsTabPage {
     this.answered = true;
     if (
       typeof this.chosenAnswer === 'number' &&
-      this.wordSets()[0].answers[this.chosenAnswer].toLowerCase() ===
-        this.wordSets()[0].words[0]?.english_translation?.toLowerCase()
+      this.chosenAnswer === this.wordSets()[0].correctAnswer
     ) {
       this.handleAnswer(true);
     } else {
@@ -168,6 +212,19 @@ export class TranslationsTabPage {
     } else {
       return 'danger';
     }
+  }
+
+  protected toggleGerman(event: { detail: { checked: boolean } }) {
+    console.log(event?.detail?.checked);
+    this.localStorageService.setItem(
+      LocalStorageKeysEnum.GermanEnabled,
+      event?.detail?.checked,
+    );
+    this.chosen = false;
+    this.answered = false;
+    this.chosenAnswer = undefined;
+    this.isCorrect = false;
+    this.wordSets.set([]);
   }
 
   protected handleRefresh() {
