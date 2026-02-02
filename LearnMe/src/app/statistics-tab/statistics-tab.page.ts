@@ -53,6 +53,7 @@ export class StatisticsTabPage {
   private swiperPageData?: PageLocalStorageDataType;
   private translationsPageData?: PageLocalStorageDataType;
   private searchPageData?: SearchPageLocalStorageDataType;
+  private wordMatchPageData?: PageLocalStorageDataType;
   protected readonly dualColorSchemes = {
     domain: [
       getComputedStyle(document.documentElement)
@@ -84,6 +85,8 @@ export class StatisticsTabPage {
   protected articlesTotalResultsVS: { name: string; value: number }[] = [];
   protected translationsTotalResults: { name: string; value: number }[] = [];
   protected translationsTotalResultsVS: { name: string; value: number }[] = [];
+  protected wordMatchTotalResults: { name: string; value: number }[] = [];
+  protected wordMatchTotalResultsVS: { name: string; value: number }[] = [];
   protected searchTotalResults: { name: string; value: number }[] = [];
   protected searchTotalResultsVS: { name: string; value: number }[] = [];
   protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
@@ -101,6 +104,40 @@ export class StatisticsTabPage {
     this.getArticlesPageData();
     this.getSearchPageData();
     this.getTranslationsPageData();
+    this.getWordMatchPageData();
+  }
+
+  protected getWordMatchPageData() {
+    this.wordMatchPageData =
+      this.localStorageService.handleLocalStorageDataRetrieval(
+        LocalStorageKeysEnum.MatchPage,
+      );
+    this.wordMatchTotalResults = [
+      {
+        name: 'Total Matches',
+        value:
+          this.wordMatchPageData.totalSuccesses +
+          this.wordMatchPageData.totalFails,
+      },
+      {
+        name: 'Correct Matches',
+        value: this.wordMatchPageData.totalSuccesses,
+      },
+      {
+        name: 'Wrong Matches',
+        value: this.wordMatchPageData.totalFails,
+      },
+    ];
+    this.wordMatchTotalResultsVS = [
+      {
+        name: 'Right Matches',
+        value: this.wordMatchPageData.totalSuccesses,
+      },
+      {
+        name: 'Correct Matches',
+        value: this.wordMatchPageData.totalFails,
+      },
+    ];
   }
 
   protected segmentChange(event: any) {

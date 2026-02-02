@@ -1,0 +1,34 @@
+.main-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+  justify-content: center;
+  position: relative;
+}
+
+.no-ripple {
+  --ripple-color: transparent;
+}
+
+.next {
+  font-weight: bold;
+  margin: 12px;
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  gap: 8px;
+}

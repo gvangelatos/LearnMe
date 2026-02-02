@@ -49,6 +49,24 @@ export class LocalStorageService {
       : this.applySearchPageIncrement(searchPageStatistics);
   }
 
+  addMatchPageSuccess(): void {
+    const translationsPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.MatchPage);
+    this.applyPageSuccess(
+      LocalStorageKeysEnum.MatchPage,
+      translationsPageStatistics,
+    );
+  }
+
+  addMatchPageFailure(): void {
+    const translationsPageStatistics: PageLocalStorageDataType =
+      this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.MatchPage);
+    this.applyPageFailure(
+      LocalStorageKeysEnum.MatchPage,
+      translationsPageStatistics,
+    );
+  }
+
   addTranslationsPageSuccess(): void {
     const translationsPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(

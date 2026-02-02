@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Word Match </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
+  @if (!wordSets().length) {
+  <div class="spinner-container">
+    <ion-label>Getting you a word...</ion-label>
+    <ion-spinner name="lines-sharp" />
+  </div>
+  } @else {
+  <div class="main-container">
+    <div class="left">
+      @for (choice of wordSets()[0].left; track choice.english_translation +
+      '-left-' + $index){
+      <ion-button
+        fill="outline"
+        [class]="{'choice-btn':true,'gelatin': gelatin(choice,true)}"
+        [disabled]="isButtonFound(choice)"
+        [color]="getButtonColor(choice,true)"
+        (click)="answeredClicked(choice,true)"
+      >
+        {{ choice.english_translation | titlecase }}
+      </ion-button>
+      }
+    </div>
+    <div class="right">
+      @for (choice of wordSets()[0].right; track choice.german_translation +
+      '-right-' + $index){
+      <ion-button
+        fill="outline"
+        [class]="{'choice-btn':true,'gelatin': gelatin(choice,false)}"
+        [disabled]="isButtonFound(choice)"
+        [color]="getButtonColor(choice,false)"
+        (click)="answeredClicked(choice,false)"
+      >
+        {{ choice.german_translation | titlecase }}
+      </ion-button>
+      }
+    </div>
+  </div>
+  }
+</ion-content>
+
+<ion-modal
+  [isOpen]="isGameDone() || !!wrongAnswer"
+  [keyboardClose]="false"
+  [backdropDismiss]="false"
+  [handle]="false"
+  [draggable]="false"
+  [initialBreakpoint]="0.15"
+  [breakpoints]="[0.15, 0.5]"
+>
+  <ng-template>
+    @if (isGameDone() || !!wrongAnswer) {
+    <ion-button
+      shape="round"
+      class="next"
+      [color]="getTextColor()"
+      (click)="!!wrongAnswer ? handleMistakeDismiss() : handleRefresh()"
+    >
+      {{!!wrongAnswer ? 'Oops..!' : 'Next'}}
+    </ion-button>
+    }
+  </ng-template>
+</ion-modal>

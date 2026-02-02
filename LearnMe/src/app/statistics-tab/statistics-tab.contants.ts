@@ -3,4 +3,5 @@ export enum SegmentsLabels {
   'SwiperPage' = 'swiper',
   'ArticlesPage' = 'articles',
   'TranslationsPage' = 'translations',
+  'MatchPage' = 'match',
 }

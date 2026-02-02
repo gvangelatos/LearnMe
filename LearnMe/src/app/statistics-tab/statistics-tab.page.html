@@ -7,7 +7,7 @@
           color="danger"
           slot="icon-only"
           name="trash-outline"
-        />
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -36,6 +36,13 @@
         [disabled]="true"
       >
         <ion-label>Translations</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        [value]="SegmentsLabels.MatchPage"
+        content-id="match-segment"
+        [disabled]="true"
+      >
+        <ion-label>Word Match</ion-label>
       </ion-segment-button>
       <ion-segment-button
         [value]="SegmentsLabels.SearchSegment"
@@ -162,6 +169,44 @@
             legendTitle="Translations Minigame"
           />
         </div>
+        }
+      </div>
+    </ion-segment-content>
+    <ion-segment-content id="match-segment">
+      <div class="container">
+        @if (activeSegment === SegmentsLabels.MatchPage){
+          <div class="small-margin-bottom-chart-container">
+            <ngx-charts-pie-grid
+              [scheme]="dualColorSchemes"
+              [results]="wordMatchTotalResultsVS"
+            />
+          </div>
+          <div class="chart-container">
+            <ngx-charts-bar-vertical
+              [results]="wordMatchTotalResults"
+              [xAxis]="true"
+              [yAxis]="true"
+              [gradient]="true"
+              [scheme]="tripleColorSchemes"
+              [legend]="true"
+              [legendPosition]="LegendPosition.Below"
+              [trimXAxisTicks]="false"
+              [showDataLabel]="true"
+              legendTitle="Word Matches"
+            />
+          </div>
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="wordMatchTotalResultsVS"
+              [gradient]="true"
+              [scheme]="dualColorSchemes"
+              [legend]="true"
+              [legendPosition]="LegendPosition.Below"
+              [doughnut]="true"
+              [labels]="true"
+              legendTitle="Matching Minigame"
+            />
+          </div>
         }
       </div>
     </ion-segment-content>

@@ -29,6 +29,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'matching',
+        loadComponent: () =>
+          import('../matching-tab.page/matching-tab.page').then(
+            (m) => m.MatchingTabPage,
+          ),
+      },
+      {
         path: 'translations',
         loadComponent: () =>
           import('../translations-tab.page/translations-tab.page').then(

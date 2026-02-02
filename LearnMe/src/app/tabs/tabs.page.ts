@@ -13,6 +13,7 @@ import {
   searchOutline,
   statsChartOutline,
   language,
+  shuffleOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -25,6 +26,13 @@ export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
 
   constructor() {
-    addIcons({ grid, square, searchOutline, statsChartOutline, language });
+    addIcons({
+      grid,
+      square,
+      searchOutline,
+      statsChartOutline,
+      language,
+      shuffleOutline,
+    });
   }
 }
