@@ -69,7 +69,7 @@ export class GsApiService {
     return this.getMaxId().pipe(
       switchMap((maxId) => {
         return this.getSpecificWordsData(
-          this.getRandomNumbersInRange(0, maxId, count, existingIds ?? []),
+          this.getRandomNumbersInRange(1, maxId, count, existingIds ?? []),
           count,
         );
       }),
@@ -175,7 +175,7 @@ export class GsApiService {
   }
 
   private getRandomNumbersInRange(
-    min: number = 0,
+    min: number = 1,
     max: number,
     count: number = 5,
     numbersToExclude: number[],
@@ -197,7 +197,7 @@ export class GsApiService {
     WHERE A = ${positions[0]}
   `;
     for (let i = 1; i < count; i++) {
-      query += `OR A = ${positions[i]}`;
+      query += ` OR A = ${positions[i]}`;
     }
 
     return this.makeRequest(query);
