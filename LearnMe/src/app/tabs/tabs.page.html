@@ -1,36 +1,77 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="swiper" href="/tabs/swiper">
+    <ion-tab-button #swiperTabBtn tab="swiper" href="/tabs/swiper">
       <ion-icon
         aria-hidden="true"
         src="./assets/svg/swipe-cards-filled.icon.svg"
       />
+      @if (swiperTabBtn.selected) {
       <ion-label>Swiper</ion-label>
+      }
     </ion-tab-button>
 
-    <ion-tab-button tab="articles" href="/tabs/articles">
-      <ion-icon aria-hidden="true" name="grid" />
+    <ion-tab-button #articlesTabBtn tab="articles" href="/tabs/articles">
+      <ion-icon
+        aria-hidden="true"
+        name="{{ articlesTabBtn.selected ? 'grid' : 'grid-outline'}}"
+      />
+      @if (articlesTabBtn.selected) {
       <ion-label>Articles</ion-label>
+      }
     </ion-tab-button>
 
-    <ion-tab-button tab="translations" href="/tabs/translations">
-      <ion-icon aria-hidden="true" name="language" />
+    <ion-tab-button
+      #translationsTabBtn
+      tab="translations"
+      href="/tabs/translations"
+    >
+      <ion-icon
+        aria-hidden="true"
+        name="{{ translationsTabBtn.selected ? 'language' : 'language-outline'}}"
+      />
+      @if (translationsTabBtn.selected) {
       <ion-label>Translations</ion-label>
+      }
     </ion-tab-button>
 
-    <ion-tab-button tab="matching" href="/tabs/matching">
-      <ion-icon aria-hidden="true" name="shuffle-outline" />
+    <ion-tab-button #homePageTabBtn tab="home-page" href="/tabs/home-page">
+      <ion-icon
+        aria-hidden="true"
+        name="{{ homePageTabBtn.selected ? 'home' : 'home-outline'}}"
+      />
+      @if (homePageTabBtn.selected) {
+      <ion-label>Home</ion-label>
+      }
+    </ion-tab-button>
+
+    <ion-tab-button #wordMatchTabBtn tab="matching" href="/tabs/matching">
+      <ion-icon
+        aria-hidden="true"
+        name="{{ wordMatchTabBtn.selected ? 'shuffle' : 'shuffle-outline'}}"
+      />
+      @if (wordMatchTabBtn.selected) {
       <ion-label>Word Match</ion-label>
+      }
     </ion-tab-button>
 
-    <ion-tab-button tab="search" href="/tabs/search">
-      <ion-icon aria-hidden="true" name="search-outline" />
+    <ion-tab-button #searchTabBtn tab="search" href="/tabs/search">
+      <ion-icon
+        aria-hidden="true"
+        name="{{ searchTabBtn.selected ? 'search' : 'search-outline'}}"
+      />
+      @if (searchTabBtn.selected) {
       <ion-label>Search</ion-label>
+      }
     </ion-tab-button>
 
-    <ion-tab-button tab="statistics" href="/tabs/statistics">
-      <ion-icon aria-hidden="true" name="stats-chart-outline" />
+    <ion-tab-button #statisticsTabBtn tab="statistics" href="/tabs/statistics">
+      <ion-icon
+        aria-hidden="true"
+        name="{{ statisticsTabBtn.selected ? 'stats-chart' : 'stats-chart-outline'}}"
+      />
+      @if (statisticsTabBtn.selected) {
       <ion-label>Statistics</ion-label>
+      }
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

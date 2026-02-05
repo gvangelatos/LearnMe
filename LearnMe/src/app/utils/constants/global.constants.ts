@@ -44,3 +44,47 @@ export const SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE: SearchPageLocalStorageDataTyp
     totalSuccessSearches: 0,
     byMonth: {},
   };
+
+export const AVAILABLE_TABS_CONFIGURATIONS = [
+  {
+    iconActive: 'grid',
+    icon: 'grid-outline',
+    path: '/tabs/articles',
+    label: 'Articles',
+  },
+  {
+    iconActive: 'language',
+    icon: 'language-outline',
+    path: '/tabs/translations',
+    label: 'Translations',
+  },
+  {
+    iconActive: 'shuffle',
+    icon: 'shuffle-outline',
+    path: '/tabs/matching',
+    label: 'Word Match',
+  },
+  {
+    iconActive: 'search',
+    icon: 'search-outline',
+    path: '/tabs/search',
+    label: 'Search',
+  },
+  {
+    iconActive: 'stats-chart',
+    icon: 'stats-chart-outline',
+    path: '/tabs/statistics',
+    label: 'Statistics',
+  },
+  {
+    path: '/tabs/swiper',
+    label: 'Swiper',
+    src: './assets/svg/swipe-cards-filled.icon.svg',
+  },
+  // {
+  //   iconActive: 'settings',
+  //   icon: 'settings-outline',
+  //   path: '/tabs/settings',
+  //   label: 'Settings',
+  // },
+];

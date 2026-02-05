@@ -10,10 +10,17 @@ import { addIcons } from 'ionicons';
 import {
   square,
   grid,
+  gridOutline,
   searchOutline,
+  search,
   statsChartOutline,
+  statsChart,
   language,
+  languageOutline,
   shuffleOutline,
+  shuffle,
+  homeOutline,
+  home,
 } from 'ionicons/icons';
 
 @Component({
@@ -27,12 +34,19 @@ export class TabsPage {
 
   constructor() {
     addIcons({
-      grid,
       square,
+      grid,
+      gridOutline,
       searchOutline,
+      search,
       statsChartOutline,
+      statsChart,
       language,
+      languageOutline,
       shuffleOutline,
+      shuffle,
+      homeOutline,
+      home,
     });
   }
 }

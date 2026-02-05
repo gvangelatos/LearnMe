@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Welcome Back! </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
+  <div class="chart-container">
+    <ngx-charts-gauge
+      [results]="totalResults"
+      [legendPosition]="LegendPosition.Below"
+      [legend]="false"
+      units="Games"
+    />
+  </div>
+  <div class="main-container">
+    @for (tab of AVAILABLE_TABS_CONFIGURATIONS; track tab.label) {
+    <ion-card class="tab-card" [href]="tab.path">
+      <ion-card-content>
+        <div class="card-details-container">
+          <ion-icon [src]="tab?.src" color="dark" [name]="tab?.iconActive" />
+          <div>
+            <ion-text color="dark">{{tab.label}}</ion-text>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+</ion-content>

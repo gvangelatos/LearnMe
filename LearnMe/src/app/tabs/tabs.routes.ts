@@ -29,6 +29,11 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'home-page',
+        loadComponent: () =>
+          import('../home.page/home.page').then((m) => m.HomePage),
+      },
+      {
         path: 'matching',
         loadComponent: () =>
           import('../matching-tab.page/matching-tab.page').then(
@@ -44,14 +49,14 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/swiper',
+        redirectTo: '/tabs/home-page',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/swiper',
+    redirectTo: '/tabs/home-page',
     pathMatch: 'full',
   },
 ];
