@@ -25,6 +25,7 @@ import {
   GaugeModule,
   LegendPosition,
 } from '@swimlane/ngx-charts';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home.page',
@@ -41,6 +42,7 @@ import {
     IonText,
     GaugeModule,
     BarChartModule,
+    RouterLink,
   ],
 })
 export class HomePage {
