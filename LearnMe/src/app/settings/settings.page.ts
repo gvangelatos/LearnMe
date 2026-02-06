@@ -14,6 +14,7 @@ import {
 import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { FormsModule } from '@angular/forms';
+import { DarkModeService } from '../services/dark-mode/dark-mode.service';
 
 @Component({
   selector: 'app-settings',
@@ -34,12 +35,20 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class SettingsPage {
+  private readonly darkModeService = inject(DarkModeService);
   private readonly localStorageService = inject(LocalStorageService);
   protected germanEnabled: boolean = false;
   protected matchingPairs: number = 5;
+  protected paletteToggle = false;
+
   constructor() {
     this.getIsGermanEnabledStorageData();
     this.getMatchingPairsStorageData();
+    this.paletteToggle = this.darkModeService.initializeDarkMode();
+  }
+
+  protected toggleChange(event: CustomEvent) {
+    this.darkModeService.toggleDarkPalette(event.detail.checked);
   }
 
   protected rangeChanged(event: { target: { value: any } }) {

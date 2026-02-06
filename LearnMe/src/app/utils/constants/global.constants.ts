@@ -30,6 +30,7 @@ export enum LocalStorageKeysEnum {
   GermanEnabled = 'germanEnabled',
   MatchPage = 'matchPageStatistics',
   MatchPairs = 'matchPairsNumber',
+  DarkMode = 'darkMode',
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {

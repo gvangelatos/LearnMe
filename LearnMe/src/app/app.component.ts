@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { LocalStorageKeysEnum } from './utils/constants/global.constants';
+import { LocalStorageService } from './services/local-storage-service/local-storage.service';
+import { DarkModeService } from './services/dark-mode/dark-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +10,8 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor() {}
+  private readonly darkModeService = inject(DarkModeService);
+  constructor() {
+    this.darkModeService.initializeDarkMode();
+  }
 }

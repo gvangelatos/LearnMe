@@ -11,6 +11,15 @@
   <ion-list class="settings-list">
     <ion-item>
       <ion-toggle
+        helperText="Enable or disable dark mode throughout the App."
+        [(ngModel)]="paletteToggle"
+        (ionChange)="toggleChange($event)"
+      >
+        Dark Mode
+      </ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-toggle
         helperText="In Translations Minigame, switches to choosing the correct German word instead of English."
         (ionChange)="toggleGerman($event)"
         [(ngModel)]="germanEnabled"
