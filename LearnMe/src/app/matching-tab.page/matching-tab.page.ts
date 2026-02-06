@@ -7,6 +7,7 @@ import {
   IonIcon,
   IonLabel,
   IonModal,
+  IonSkeletonText,
   IonSpinner,
   IonTitle,
   IonToolbar,
@@ -33,6 +34,7 @@ const WORDS_NUMBER_IN_ROUND: number = 5;
     IonSpinner,
     TitleCasePipe,
     IonModal,
+    IonSkeletonText,
   ],
 })
 export class MatchingTabPage {

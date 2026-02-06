@@ -6,36 +6,44 @@
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
   <div class="content-container">
-    @for (word of wordCards(); track word.id + '-' + $index) {
-
-      <ion-card [id]="word.id" class="word-card">
-        @if (word.isSwipeRight) {
-          <div class="success-overlay">
-            <ion-icon
-              class="success-icon"
-              name="checkmark-circle-outline"
-            ></ion-icon>
+    @if (!wordCards().length) {
+    <ion-card class="word-card">
+      <ion-card-content>
+        <div class="word-translation-container">
+          <div class="german-word-translation">
+            <ion-skeleton-text [animated]="true" />
           </div>
-        } @else if (word.isSwipeLeft) {
-          <div class="failure-overlay">
-            <ion-icon class="success-icon" name="close-circle-outline"></ion-icon>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    }@else{ @for (word of wordCards(); track word.id + '-' + $index) {
+    <ion-card [id]="word.id" class="word-card">
+      @if (word.isSwipeRight) {
+      <div class="success-overlay">
+        <ion-icon
+          class="success-icon"
+          name="checkmark-circle-outline"
+        ></ion-icon>
+      </div>
+      } @else if (word.isSwipeLeft) {
+      <div class="failure-overlay">
+        <ion-icon class="success-icon" name="close-circle-outline"></ion-icon>
+      </div>
+      }
+      <ion-card-content>
+        <div class="word-translation-container">
+          <div class="german-word-translation">
+            {{ word.article ? word.article + ' ' : '' }}{{
+            word.german_translation }}
           </div>
-        }
-        <ion-card-content>
-          <div class="word-translation-container">
-            <div class="german-word-translation">
-              {{ word.article ? word.article + ' ' : '' }}{{
-                word.german_translation
-              }}
-            </div>
-            @if (word.isUnknown) {
-              <div class="english-word-translation">
-                "{{ word.english_translation }}"
-              </div>
-            }
+          @if (word.isUnknown) {
+          <div class="english-word-translation">
+            "{{ word.english_translation }}"
           </div>
-        </ion-card-content>
-      </ion-card>
-    }
+          }
+        </div>
+      </ion-card-content>
+    </ion-card>
+    } }
   </div>
 </ion-content>

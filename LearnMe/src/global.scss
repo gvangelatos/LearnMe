@@ -56,6 +56,11 @@ $color-text-med-light: #d9dce1;
 $color-text-light: #f0f1f6;
 $color-text-lighter: #fff;
 
+ion-skeleton-text{
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 5px;
+}
+
 .gelatin {
   animation: gelatin 0.3s linear;
 }

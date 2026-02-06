@@ -17,6 +17,7 @@ import {
   IonCard,
   IonCardContent,
   IonIcon,
+  IonSkeletonText,
 } from '@ionic/angular/standalone';
 import { SWIPE_THRESHOLD } from './swipe-page.constants';
 import { WordCardModel } from './tab1.models';
@@ -38,6 +39,7 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
     IonCard,
     IonCardContent,
     IonIcon,
+    IonSkeletonText,
   ],
 })
 export class Tab1Page implements AfterViewInit {
@@ -58,25 +60,28 @@ export class Tab1Page implements AfterViewInit {
     this.gsApiService
       .getRandomWords()
       .pipe(take(1))
-      .subscribe((wordsData) => {
-        this.wordCards.set([]);
-        wordsData.forEach((word) => {
-          this.wordCards.update((prevValue) => [
-            ...prevValue,
-            {
-              id: word.id,
-              isUnknown: false,
-              isSwipeRight: false,
-              isSwipeLeft: false,
-              article: word.article,
-              english_translation: word.english_translation,
-              german_translation: word.german_translation,
-              isPlural: word.isPlural,
-            },
-          ]);
-        });
-        this.cdr.detectChanges();
-        this.useSwipeGesture(this.cards.toArray());
+      .subscribe({
+        next: (wordsData) => {
+          this.wordCards.set([]);
+          wordsData.forEach((word) => {
+            this.wordCards.update((prevValue) => [
+              ...prevValue,
+              {
+                id: word.id,
+                isUnknown: false,
+                isSwipeRight: false,
+                isSwipeLeft: false,
+                article: word.article,
+                english_translation: word.english_translation,
+                german_translation: word.german_translation,
+                isPlural: word.isPlural,
+              },
+            ]);
+          });
+          this.cdr.detectChanges();
+          this.useSwipeGesture(this.cards.toArray());
+        },
+        error: (err) => {},
       });
   }
 

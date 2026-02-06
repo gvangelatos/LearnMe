@@ -16,6 +16,10 @@
 .german-word-translation {
   font-size: 24px;
   color: var(--ion-text-color);
+  ion-skeleton-text {
+    width: 150px;
+    height: 40px;
+  }
 }
 
 .english-word-translation {

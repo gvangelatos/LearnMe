@@ -11,6 +11,7 @@ import {
   IonModal,
   IonRefresher,
   IonRefresherContent,
+  IonSkeletonText,
   IonSpinner,
   IonText,
   IonTitle,
@@ -53,6 +54,7 @@ const WORDS_SETS_LENGTH: number = 3;
     IonItem,
     IonToggle,
     FormsModule,
+    IonSkeletonText,
   ],
 })
 export class TranslationsTabPage {

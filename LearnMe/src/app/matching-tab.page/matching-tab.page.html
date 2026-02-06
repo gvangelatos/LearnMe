@@ -6,9 +6,17 @@
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
   @if (!wordSets().length) {
-  <div class="spinner-container">
-    <ion-label>Getting you a word...</ion-label>
-    <ion-spinner name="lines-sharp" />
+  <div class="main-container">
+    <div class="left">
+      @for (choice of [].constructor(5); track $index){
+      <ion-skeleton-text [animated]="true" />
+      }
+    </div>
+    <div class="right">
+      @for (choice of [].constructor(5); track $index){
+      <ion-skeleton-text [animated]="true" />
+      }
+    </div>
   </div>
   } @else {
   <div class="main-container">
