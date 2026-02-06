@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> Welcome Back! </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button routerLink="/settings">
+        <ion-icon color="dark" slot="icon-only" name="settings-outline" />
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content [forceOverscroll]="false" [fullscreen]="true">

@@ -84,7 +84,11 @@ export class TranslationsTabPage {
     });
   }
 
-  private getIsGermanEnabledStorageData() {
+  ionViewWillEnter() {
+    this.getIsGermanEnabledStorageData(true);
+  }
+
+  private getIsGermanEnabledStorageData(refreshIfChanged: boolean = false) {
     const isGermanEnabledStorageData =
       this.localStorageService.getItem<boolean>(
         LocalStorageKeysEnum.GermanEnabled,
@@ -95,7 +99,16 @@ export class TranslationsTabPage {
         LocalStorageKeysEnum.GermanEnabled,
         false,
       );
+      if (refreshIfChanged) {
+        this.toggleGerman({ detail: { checked: false } });
+      }
     } else {
+      if (
+        refreshIfChanged &&
+        this.germanEnabled !== isGermanEnabledStorageData
+      ) {
+        this.toggleGerman({ detail: { checked: isGermanEnabledStorageData } });
+      }
       this.germanEnabled = isGermanEnabledStorageData;
     }
   }
@@ -217,7 +230,6 @@ export class TranslationsTabPage {
   }
 
   protected toggleGerman(event: { detail: { checked: boolean } }) {
-    console.log(event?.detail?.checked);
     this.localStorageService.setItem(
       LocalStorageKeysEnum.GermanEnabled,
       event?.detail?.checked,

@@ -1,5 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
+  IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonContent,
@@ -8,17 +10,14 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  NavController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { settings } from 'ionicons/icons';
+import { settingsOutline } from 'ionicons/icons';
 import {
   AVAILABLE_TABS_CONFIGURATIONS,
   LocalStorageKeysEnum,
   PageLocalStorageDataType,
-  PageMonthStats,
 } from '../utils/constants/global.constants';
-import { AnimationController } from '@ionic/angular';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import {
   BarChartModule,
@@ -43,11 +42,11 @@ import { RouterLink } from '@angular/router';
     GaugeModule,
     BarChartModule,
     RouterLink,
+    IonButton,
+    IonButtons,
   ],
 })
 export class HomePage {
-  private readonly navController = inject(NavController);
-  private readonly animationCtrl = inject(AnimationController);
   private readonly localStorageService = inject(LocalStorageService);
   protected totalResults: { name: string; value: number }[] = [];
   private totalData: PageLocalStorageDataType = {
@@ -57,7 +56,7 @@ export class HomePage {
   };
 
   constructor() {
-    addIcons({ settings });
+    addIcons({ settingsOutline });
   }
 
   ionViewDidEnter() {
@@ -104,7 +103,6 @@ export class HomePage {
         value: this.totalData.totalFails,
       },
     ];
-    console.log(this.totalResults);
   }
 
   protected readonly AVAILABLE_TABS_CONFIGURATIONS =
