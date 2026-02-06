@@ -15,6 +15,7 @@ import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { FormsModule } from '@angular/forms';
 import { DarkModeService } from '../services/dark-mode/dark-mode.service';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-settings',
@@ -35,28 +36,40 @@ import { DarkModeService } from '../services/dark-mode/dark-mode.service';
   ],
 })
 export class SettingsPage {
+  private readonly hapticsService = inject(HapticsService);
   private readonly darkModeService = inject(DarkModeService);
   private readonly localStorageService = inject(LocalStorageService);
   protected germanEnabled: boolean = false;
   protected matchingPairs: number = 5;
   protected paletteToggle = false;
+  protected hapticsToggle = false;
 
   constructor() {
     this.getIsGermanEnabledStorageData();
     this.getMatchingPairsStorageData();
     this.paletteToggle = this.darkModeService.initializeDarkMode();
+    this.hapticsToggle = this.hapticsService.initializeHaptics();
+  }
+
+  protected vibrate() {
+    this.hapticsService.vibrateDefault();
   }
 
   protected toggleChange(event: CustomEvent) {
     this.darkModeService.toggleDarkPalette(event.detail.checked);
+    this.hapticsService.vibrateDefault();
+  }
+
+  protected toggleHaptics(event: CustomEvent) {
+    this.hapticsService.toggleHaptics(event.detail.checked);
   }
 
   protected rangeChanged(event: { target: { value: any } }) {
-    console.log(event.target.value);
     this.localStorageService.setItem(
       LocalStorageKeysEnum.MatchPairs,
       event?.target.value,
     );
+    this.hapticsService.vibrateDefault();
   }
 
   private getMatchingPairsStorageData() {
@@ -95,5 +108,6 @@ export class SettingsPage {
       LocalStorageKeysEnum.GermanEnabled,
       event?.detail?.checked,
     );
+    this.hapticsService.vibrateDefault();
   }
 }

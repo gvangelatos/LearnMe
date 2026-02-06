@@ -26,6 +26,7 @@ import { addIcons } from 'ionicons';
 import { checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
 import { take } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-swiper-tab',
@@ -48,6 +49,7 @@ export class Tab1Page implements AfterViewInit {
   private readonly platform = inject(Platform);
   private readonly gsApiService = inject(GsApiService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly hapticsService = inject(HapticsService);
   private readonly gestureCtrl = inject(GestureController);
   private readonly localStorageService = inject(LocalStorageService);
   protected wordCards = signal<WordCardModel[]>([]);
@@ -104,10 +106,12 @@ export class Tab1Page implements AfterViewInit {
           card.nativeElement.style.transition = '.5s ease-out';
           this.setWordData(card.nativeElement.id, false, false);
           if (detail.deltaX > SWIPE_THRESHOLD) {
+            this.hapticsService.vibrateDefault();
             card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${detail.deltaX / 2}deg)`;
             this.removeSuccessWordCard(card.nativeElement.id, gesture);
             this.documentSuccess(card.nativeElement.id);
           } else if (detail.deltaX < -SWIPE_THRESHOLD) {
+            this.hapticsService.vibrateDefault();
             card.nativeElement.style.transform = '';
             this.documentFailure(card.nativeElement.id);
             this.setWordData(card.nativeElement.id, undefined, undefined, true);

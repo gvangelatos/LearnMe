@@ -1,7 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="/tabs/home-page" color="dark" />
+      <ion-back-button
+        default-href="/tabs/home-page"
+        color="dark"
+        (click)="vibrate()"
+      />
     </ion-buttons>
     <ion-title> Settings </ion-title>
   </ion-toolbar>
@@ -16,6 +20,15 @@
         (ionChange)="toggleChange($event)"
       >
         Dark Mode
+      </ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-toggle
+        helperText="Enable vibrations when interacting with the App."
+        [(ngModel)]="hapticsToggle"
+        (ionChange)="toggleHaptics($event)"
+      >
+        Haptics
       </ion-toggle>
     </ion-item>
     <ion-item>

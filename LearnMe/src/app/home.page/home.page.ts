@@ -25,6 +25,7 @@ import {
   LegendPosition,
 } from '@swimlane/ngx-charts';
 import { RouterLink } from '@angular/router';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-home.page',
@@ -47,6 +48,7 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class HomePage {
+  private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
   protected totalResults: { name: string; value: number }[] = [];
   private totalData: PageLocalStorageDataType = {
@@ -108,4 +110,8 @@ export class HomePage {
   protected readonly AVAILABLE_TABS_CONFIGURATIONS =
     AVAILABLE_TABS_CONFIGURATIONS;
   protected readonly LegendPosition = LegendPosition;
+
+  protected vibrate() {
+    this.hapticsService.vibrateDefault();
+  }
 }

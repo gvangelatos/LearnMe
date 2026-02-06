@@ -1,4 +1,4 @@
-import { Component, EnvironmentInjector, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonTabs,
   IonTabBar,
@@ -22,6 +22,7 @@ import {
   homeOutline,
   home,
 } from 'ionicons/icons';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-tabs',
@@ -30,7 +31,7 @@ import {
   imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage {
-  public environmentInjector = inject(EnvironmentInjector);
+  private readonly hapticsService = inject(HapticsService);
 
   constructor() {
     addIcons({
@@ -48,5 +49,9 @@ export class TabsPage {
       homeOutline,
       home,
     });
+  }
+
+  protected cardClicked() {
+    this.hapticsService.vibrateDefault();
   }
 }

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title> Welcome Back! </ion-title>
     <ion-buttons slot="primary">
-      <ion-button routerLink="/settings">
+      <ion-button routerLink="/settings" (click)="vibrate()">
         <ion-icon color="dark" slot="icon-only" name="settings-outline" />
       </ion-button>
     </ion-buttons>
@@ -19,7 +19,7 @@
   </div>
   <div class="main-container">
     @for (tab of AVAILABLE_TABS_CONFIGURATIONS; track tab.label) {
-    <ion-card class="tab-card" [routerLink]="tab.path">
+    <ion-card class="tab-card" [routerLink]="tab.path" (click)="vibrate()">
       <ion-card-content>
         <div class="card-details-container">
           <ion-icon [src]="tab?.src" color="dark" [name]="tab?.iconActive" />
