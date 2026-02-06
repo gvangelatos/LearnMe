@@ -19,6 +19,7 @@ import { addIcons } from 'ionicons';
 import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NgClass } from '@angular/common';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-articles-tab',
@@ -41,6 +42,7 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 })
 export class Tab2Page {
   private readonly gsApiService = inject(GsApiService);
+  private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
   protected words = signal<WordCardModel[]>([]);
   protected isCorrect: boolean = false;
@@ -112,8 +114,10 @@ export class Tab2Page {
       !this.words()[0].isPlural
     ) {
       this.handleAnswer(true);
+      this.hapticsService.vibrateSuccess();
     } else {
       this.handleAnswer(false);
+      this.hapticsService.vibrateError();
     }
   }
 

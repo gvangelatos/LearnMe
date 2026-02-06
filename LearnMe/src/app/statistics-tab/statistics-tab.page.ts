@@ -25,6 +25,7 @@ import { SegmentsLabels } from './statistics-tab.contants';
 import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
 import { ClearStatisticsComponent } from './components/clear-statistics/clear-statistics.component';
+import { HapticsService } from '../services/haptics/haptics.service';
 
 @Component({
   selector: 'app-statistics-tab',
@@ -49,6 +50,7 @@ import { ClearStatisticsComponent } from './components/clear-statistics/clear-st
   ],
 })
 export class StatisticsTabPage {
+  private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
   private swiperPageData?: PageLocalStorageDataType;
   private translationsPageData?: PageLocalStorageDataType;
@@ -138,6 +140,10 @@ export class StatisticsTabPage {
         value: this.wordMatchPageData.totalFails,
       },
     ];
+  }
+
+  protected vibrate() {
+    this.hapticsService.vibrateDefault();
   }
 
   protected segmentChange(event: any) {

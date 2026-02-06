@@ -15,6 +15,7 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
+import { HapticsService } from '../services/haptics/haptics.service';
 const WORDS_SETS_LENGTH: number = 3;
 const WORDS_NUMBER_IN_ROUND: number = 5;
 @Component({
@@ -35,6 +36,7 @@ const WORDS_NUMBER_IN_ROUND: number = 5;
 export class MatchingTabPage {
   private readonly gsApiService = inject(GsApiService);
   private readonly utilityService = inject(UtilityService);
+  private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
   protected wordSets = signal<
     {
@@ -135,9 +137,11 @@ export class MatchingTabPage {
         this.wrongAnswer = undefined;
         this.chosenAnswer = undefined;
         this.handleStatisticsUpdateAnswerStatus(true);
+        this.hapticsService.vibrateSuccess();
       } else {
         this.wrongAnswer = word;
         this.handleStatisticsUpdateAnswerStatus(false);
+        this.hapticsService.vibrateError();
       }
     }
   }

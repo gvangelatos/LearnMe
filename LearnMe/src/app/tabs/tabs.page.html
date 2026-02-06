@@ -1,6 +1,11 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button #swiperTabBtn tab="swiper" href="/tabs/swiper">
+    <ion-tab-button
+      #swiperTabBtn
+      tab="swiper"
+      href="/tabs/swiper"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         src="./assets/svg/swipe-cards-filled.icon.svg"
@@ -10,7 +15,12 @@
       }
     </ion-tab-button>
 
-    <ion-tab-button #articlesTabBtn tab="articles" href="/tabs/articles">
+    <ion-tab-button
+      #articlesTabBtn
+      tab="articles"
+      href="/tabs/articles"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         name="{{ articlesTabBtn.selected ? 'grid' : 'grid-outline'}}"
@@ -24,6 +34,7 @@
       #translationsTabBtn
       tab="translations"
       href="/tabs/translations"
+      (click)="cardClicked()"
     >
       <ion-icon
         aria-hidden="true"
@@ -34,7 +45,12 @@
       }
     </ion-tab-button>
 
-    <ion-tab-button #homePageTabBtn tab="home-page" href="/tabs/home-page">
+    <ion-tab-button
+      #homePageTabBtn
+      tab="home-page"
+      href="/tabs/home-page"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         name="{{ homePageTabBtn.selected ? 'home' : 'home-outline'}}"
@@ -44,7 +60,12 @@
       }
     </ion-tab-button>
 
-    <ion-tab-button #wordMatchTabBtn tab="matching" href="/tabs/matching">
+    <ion-tab-button
+      #wordMatchTabBtn
+      tab="matching"
+      href="/tabs/matching"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         name="{{ wordMatchTabBtn.selected ? 'shuffle' : 'shuffle-outline'}}"
@@ -54,7 +75,12 @@
       }
     </ion-tab-button>
 
-    <ion-tab-button #searchTabBtn tab="search" href="/tabs/search">
+    <ion-tab-button
+      #searchTabBtn
+      tab="search"
+      href="/tabs/search"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         name="{{ searchTabBtn.selected ? 'search' : 'search-outline'}}"
@@ -64,7 +90,12 @@
       }
     </ion-tab-button>
 
-    <ion-tab-button #statisticsTabBtn tab="statistics" href="/tabs/statistics">
+    <ion-tab-button
+      #statisticsTabBtn
+      tab="statistics"
+      href="/tabs/statistics"
+      (click)="cardClicked()"
+    >
       <ion-icon
         aria-hidden="true"
         name="{{ statisticsTabBtn.selected ? 'stats-chart' : 'stats-chart-outline'}}"
