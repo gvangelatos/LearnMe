@@ -8,12 +8,12 @@
   @if (!wordSets().length) {
   <div class="main-container">
     <div class="left">
-      @for (choice of [].constructor(5); track $index){
+      @for (choice of [].constructor(matchingPairs); track $index){
       <ion-skeleton-text [animated]="true" />
       }
     </div>
     <div class="right">
-      @for (choice of [].constructor(5); track $index){
+      @for (choice of [].constructor(matchingPairs); track $index){
       <ion-skeleton-text [animated]="true" />
       }
     </div>

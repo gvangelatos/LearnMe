@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonItem,
   IonList,
+  IonRange,
   IonTitle,
   IonToggle,
   IonToolbar,
@@ -29,13 +30,39 @@ import { FormsModule } from '@angular/forms';
     IonList,
     IonToggle,
     FormsModule,
+    IonRange,
   ],
 })
 export class SettingsPage {
   private readonly localStorageService = inject(LocalStorageService);
   protected germanEnabled: boolean = false;
+  protected matchingPairs: number = 5;
   constructor() {
     this.getIsGermanEnabledStorageData();
+    this.getMatchingPairsStorageData();
+  }
+
+  protected rangeChanged(event: { target: { value: any } }) {
+    console.log(event.target.value);
+    this.localStorageService.setItem(
+      LocalStorageKeysEnum.MatchPairs,
+      event?.target.value,
+    );
+  }
+
+  private getMatchingPairsStorageData() {
+    const matchingPairsStorageData = this.localStorageService.getItem<number>(
+      LocalStorageKeysEnum.MatchPairs,
+    );
+    if (matchingPairsStorageData === null) {
+      this.matchingPairs = 5;
+      this.localStorageService.setItem(
+        LocalStorageKeysEnum.MatchPairs,
+        this.matchingPairs,
+      );
+    } else {
+      this.matchingPairs = matchingPairsStorageData;
+    }
   }
 
   private getIsGermanEnabledStorageData() {

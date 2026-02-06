@@ -29,6 +29,7 @@ export enum LocalStorageKeysEnum {
   TranslationsPage = 'translationsPageStatistics',
   GermanEnabled = 'germanEnabled',
   MatchPage = 'matchPageStatistics',
+  MatchPairs = 'matchPairsNumber',
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {

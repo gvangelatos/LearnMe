@@ -18,5 +18,19 @@
         Switch to German
       </ion-toggle>
     </ion-item>
+    <ion-item>
+      <ion-range
+        class="range"
+        color="dark"
+        label="No. of Matching Pairs"
+        [ticks]="true"
+        [snaps]="true"
+        [pin]="true"
+        [min]="2"
+        [max]="10"
+        [(ngModel)]="matchingPairs"
+        (ionKnobMoveEnd)="rangeChanged($event)"
+      />
+    </ion-item>
   </ion-list>
 </ion-content>

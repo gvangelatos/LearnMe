@@ -1,14 +1,10 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonLabel,
   IonModal,
   IonSkeletonText,
-  IonSpinner,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -18,6 +14,7 @@ import { UtilityService } from '../services/utility/utility.service';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
+import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 const WORDS_SETS_LENGTH: number = 3;
 const WORDS_NUMBER_IN_ROUND: number = 5;
 @Component({
@@ -30,8 +27,6 @@ const WORDS_NUMBER_IN_ROUND: number = 5;
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonLabel,
-    IonSpinner,
     TitleCasePipe,
     IonModal,
     IonSkeletonText,
@@ -53,13 +48,37 @@ export class MatchingTabPage {
   };
   protected wrongAnswer?: WordCardModel;
   private foundWords: WordCardModel[] = [];
+  protected matchingPairs: number = 5;
 
   constructor() {
+    this.getMatchingPairsStorageData();
     effect(() => {
       if (this.wordSets().length < WORDS_SETS_LENGTH) {
         this.getWordsSet();
       }
     });
+  }
+
+  ionViewWillEnter() {
+    this.getMatchingPairsStorageData(true);
+  }
+
+  private getMatchingPairsStorageData(refreshIfChanged: boolean = false) {
+    const matchingPairsStorageData = this.localStorageService.getItem<number>(
+      LocalStorageKeysEnum.MatchPairs,
+    );
+    if (matchingPairsStorageData === null) {
+      this.matchingPairs = 5;
+      this.localStorageService.setItem(
+        LocalStorageKeysEnum.MatchPairs,
+        this.matchingPairs,
+      );
+    } else {
+      if (refreshIfChanged && this.matchingPairs !== matchingPairsStorageData) {
+        this.wordSets.set([]);
+      }
+      this.matchingPairs = matchingPairsStorageData;
+    }
   }
 
   protected getTextColor() {
@@ -173,7 +192,7 @@ export class MatchingTabPage {
 
   private getWordsSet() {
     this.gsApiService
-      .getRandomWords([], WORDS_NUMBER_IN_ROUND)
+      .getRandomWords([], this.matchingPairs)
       .pipe(
         map((words) => {
           return {
