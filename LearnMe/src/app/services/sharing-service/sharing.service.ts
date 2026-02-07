@@ -46,17 +46,9 @@ export class SharingService {
         console.error('Element not found:', elementId);
         return;
       }
-      // Check element dimensions
-      console.log('Element dimensions:', {
-        width: element.offsetWidth,
-        height: element.offsetHeight,
-        scrollWidth: element.scrollWidth,
-        scrollHeight: element.scrollHeight,
-      });
 
       // Make sure element is visible
       const rect = element.getBoundingClientRect();
-      console.log('Element rect:', rect);
 
       if (element.offsetWidth === 0 || element.offsetHeight === 0) {
         console.error('Element has no dimensions');
@@ -65,7 +57,6 @@ export class SharingService {
 
       // Optional: wait a bit for animations/renders to complete
       await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log('Attempting to create blob...');
 
       // Convert to blob
       const dataUrl = await domtoimage.toPng(element, {
@@ -75,13 +66,9 @@ export class SharingService {
         height: element.scrollHeight,
       });
 
-      console.log('Data URL created');
-
       // Convert data URL to blob
       const response = await fetch(dataUrl);
       const blob = await response.blob();
-
-      console.log('Blob created:', blob.size, 'bytes');
 
       if (!blob || blob.size === 0) {
         console.error('Failed to create blob');
