@@ -3,6 +3,8 @@ import {
   IonButton,
   IonButtons,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
   IonIcon,
   IonLabel,
@@ -23,9 +25,11 @@ import {
 import { Color, LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { SegmentsLabels } from './statistics-tab.contants';
 import { addIcons } from 'ionicons';
-import { trashOutline } from 'ionicons/icons';
+import { trashOutline, shareOutline } from 'ionicons/icons';
 import { ClearStatisticsComponent } from './components/clear-statistics/clear-statistics.component';
 import { HapticsService } from '../services/haptics/haptics.service';
+import domtoimage from 'dom-to-image';
+import { SharingService } from '../services/sharing-service/sharing.service';
 
 @Component({
   selector: 'app-statistics-tab',
@@ -47,9 +51,12 @@ import { HapticsService } from '../services/haptics/haptics.service';
     IonIcon,
     IonModal,
     ClearStatisticsComponent,
+    IonFab,
+    IonFabButton,
   ],
 })
 export class StatisticsTabPage {
+  private readonly sharingService = inject(SharingService);
   private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
   private swiperPageData?: PageLocalStorageDataType;
@@ -92,13 +99,16 @@ export class StatisticsTabPage {
   protected searchTotalResults: { name: string; value: number }[] = [];
   protected searchTotalResultsVS: { name: string; value: number }[] = [];
   protected activeSegment: SegmentsLabels = SegmentsLabels.SwiperPage;
+  protected sharingEnabled: boolean = false;
 
   constructor() {
-    addIcons({ trashOutline });
+    addIcons({ trashOutline, shareOutline });
+    this.sharingEnabled = this.sharingService.initializeSharing();
   }
 
   ionViewDidEnter() {
     this.getDataFromLocalStorage();
+    this.sharingEnabled = this.sharingService.initializeSharing();
   }
 
   protected getDataFromLocalStorage() {
@@ -107,6 +117,15 @@ export class StatisticsTabPage {
     this.getSearchPageData();
     this.getTranslationsPageData();
     this.getWordMatchPageData();
+  }
+
+  protected share() {
+    this.vibrate();
+    this.sharingService.shareGraphs(
+      this.activeSegment,
+      `Hey, Look how i am doing at the ${this.activeSegment.toUpperCase()} minigame in LearnMe!`,
+      this.activeSegment,
+    );
   }
 
   protected getWordMatchPageData() {

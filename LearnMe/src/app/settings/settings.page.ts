@@ -35,6 +35,7 @@ import {
   ribbonOutline,
   rocketOutline,
 } from 'ionicons/icons';
+import { SharingService } from '../services/sharing-service/sharing.service';
 
 @Component({
   selector: 'app-settings',
@@ -55,6 +56,7 @@ import {
   ],
 })
 export class SettingsPage {
+  private readonly sharingService = inject(SharingService);
   private readonly hapticsService = inject(HapticsService);
   private readonly darkModeService = inject(DarkModeService);
   private readonly localStorageService = inject(LocalStorageService);
@@ -64,11 +66,13 @@ export class SettingsPage {
   protected paletteToggle = false;
   protected hapticsToggle = false;
   protected toastsToggle = false;
+  protected sharingToggle = false;
 
   constructor() {
     this.getIsGermanEnabledStorageData();
     this.getMatchingPairsStorageData();
     this.paletteToggle = this.darkModeService.initializeDarkMode();
+    this.sharingToggle = this.sharingService.initializeSharing();
     this.hapticsToggle = this.hapticsService.initializeHaptics();
     this.toastsToggle = this.affirmationToastService.initializeToastMessages();
   }
@@ -89,6 +93,17 @@ export class SettingsPage {
 
   protected toggleHaptics(event: CustomEvent) {
     this.hapticsService.toggleHaptics(event.detail.checked);
+    this.hapticsService.vibrateDefault();
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
+  }
+
+  protected toggleSharing(event: CustomEvent) {
+    this.sharingService.toggleSharing(event.detail.checked);
+    this.hapticsService.vibrateDefault();
     this.affirmationToastService.presentToast(
       'Settings Saved!',
       'success',
@@ -98,6 +113,7 @@ export class SettingsPage {
 
   protected toggleToasts(event: CustomEvent) {
     this.affirmationToastService.toggleToasts(event.detail.checked);
+    this.hapticsService.vibrateDefault();
     this.affirmationToastService.presentToast(
       'Settings Saved!',
       'success',

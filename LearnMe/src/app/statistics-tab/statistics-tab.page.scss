@@ -15,6 +15,10 @@
   border-top: 1px solid grey;
 }
 
+ion-fab {
+  margin-bottom: var(--ion-safe-area-bottom, 0);
+}
+
 .chart-container {
   padding-top: 16px;
   height: 300px;

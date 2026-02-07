@@ -61,7 +61,10 @@
     <ion-segment-content id="swiper-segment">
       <div class="container">
         @if (activeSegment === SegmentsLabels.SwiperPage){
-        <div class="small-margin-bottom-chart-container">
+        <div
+          [id]="SegmentsLabels.SwiperPage"
+          class="small-margin-bottom-chart-container"
+        >
           <ngx-charts-pie-grid
             [scheme]="dualColorSchemes"
             [results]="swiperTotalResultsVS"
@@ -93,14 +96,16 @@
             legendTitle="Swipes"
           />
         </div>
-
         }
       </div>
     </ion-segment-content>
     <ion-segment-content id="articles-segment">
       <div class="container">
         @if (activeSegment === SegmentsLabels.ArticlesPage){
-        <div class="small-margin-bottom-chart-container">
+        <div
+          [id]="SegmentsLabels.ArticlesPage"
+          class="small-margin-bottom-chart-container"
+        >
           <ngx-charts-pie-grid
             [scheme]="dualColorSchemes"
             [results]="articlesTotalResultsVS"
@@ -138,7 +143,10 @@
     <ion-segment-content id="translations-segment">
       <div class="container">
         @if (activeSegment === SegmentsLabels.TranslationsPage){
-        <div class="small-margin-bottom-chart-container">
+        <div
+          [id]="SegmentsLabels.TranslationsPage"
+          class="small-margin-bottom-chart-container"
+        >
           <ngx-charts-pie-grid
             [scheme]="dualColorSchemes"
             [results]="translationsTotalResultsVS"
@@ -176,7 +184,10 @@
     <ion-segment-content id="match-segment">
       <div class="container test">
         @if (activeSegment === SegmentsLabels.MatchPage){
-        <div class="small-margin-bottom-chart-container">
+        <div
+          [id]="SegmentsLabels.MatchPage"
+          class="small-margin-bottom-chart-container"
+        >
           <ngx-charts-pie-grid
             [scheme]="dualColorSchemes"
             [results]="wordMatchTotalResultsVS"
@@ -214,7 +225,10 @@
     <ion-segment-content id="search-segment">
       <div class="container">
         @if (activeSegment === SegmentsLabels.SearchSegment){
-        <div class="small-margin-bottom-chart-container">
+        <div
+          [id]="SegmentsLabels.SearchSegment"
+          class="small-margin-bottom-chart-container"
+        >
           <ngx-charts-number-card
             [results]="searchTotalResults"
             [animations]="true"
@@ -250,6 +264,13 @@
       </div>
     </ion-segment-content>
   </ion-segment-view>
+  @if (sharingEnabled) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button color="dark" (click)="share()">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  }
 </ion-content>
 <ion-modal
   #modal
