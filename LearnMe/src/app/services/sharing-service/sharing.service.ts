@@ -40,25 +40,17 @@ export class SharingService {
     fileName: string = 'LearnMe',
   ) {
     try {
-      // Get the div element
       const element = document.getElementById(elementId);
       if (!element) {
-        console.error('Element not found:', elementId);
+        console.log('Element not found: ' + elementId);
         return;
       }
-
-      // Make sure element is visible
-      const rect = element.getBoundingClientRect();
 
       if (element.offsetWidth === 0 || element.offsetHeight === 0) {
-        console.error('Element has no dimensions');
+        console.log('Element has no dimensions');
         return;
       }
 
-      // Optional: wait a bit for animations/renders to complete
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Convert to blob
       const dataUrl = await domtoimage.toPng(element, {
         quality: 1,
         cacheBust: true,
@@ -66,12 +58,11 @@ export class SharingService {
         height: element.scrollHeight,
       });
 
-      // Convert data URL to blob
       const response = await fetch(dataUrl);
       const blob = await response.blob();
 
       if (!blob || blob.size === 0) {
-        console.error('Failed to create blob');
+        console.log('Failed to create blob');
         return;
       }
 
@@ -97,7 +88,7 @@ export class SharingService {
         setTimeout(() => URL.revokeObjectURL(url), 100);
       }
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error('Error sharing: ' + error);
     }
   }
 }
