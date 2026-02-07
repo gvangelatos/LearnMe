@@ -33,6 +33,15 @@
     </ion-item>
     <ion-item>
       <ion-toggle
+        helperText="Enable supportive toast messages when playing any of the minigames."
+        [(ngModel)]="toastsToggle"
+        (ionChange)="toggleToasts($event)"
+      >
+        Toast Messages
+      </ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-toggle
         helperText="In Translations Minigame, switches to choosing the correct German word instead of English."
         (ionChange)="toggleGerman($event)"
         [(ngModel)]="germanEnabled"

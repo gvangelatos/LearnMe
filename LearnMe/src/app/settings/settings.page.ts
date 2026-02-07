@@ -16,6 +16,25 @@ import { LocalStorageService } from '../services/local-storage-service/local-sto
 import { FormsModule } from '@angular/forms';
 import { DarkModeService } from '../services/dark-mode/dark-mode.service';
 import { HapticsService } from '../services/haptics/haptics.service';
+import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
+import { addIcons } from 'ionicons';
+import {
+  saveOutline,
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  heartCircleOutline,
+  heartOutline,
+  flashOutline,
+  diamondOutline,
+  bulbOutline,
+  balloonOutline,
+  giftOutline,
+  medalOutline,
+  thumbsUpOutline,
+  trendingUpOutline,
+  ribbonOutline,
+  rocketOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-settings',
@@ -39,16 +58,19 @@ export class SettingsPage {
   private readonly hapticsService = inject(HapticsService);
   private readonly darkModeService = inject(DarkModeService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   protected germanEnabled: boolean = false;
   protected matchingPairs: number = 5;
   protected paletteToggle = false;
   protected hapticsToggle = false;
+  protected toastsToggle = false;
 
   constructor() {
     this.getIsGermanEnabledStorageData();
     this.getMatchingPairsStorageData();
     this.paletteToggle = this.darkModeService.initializeDarkMode();
     this.hapticsToggle = this.hapticsService.initializeHaptics();
+    this.toastsToggle = this.affirmationToastService.initializeToastMessages();
   }
 
   protected vibrate() {
@@ -58,10 +80,29 @@ export class SettingsPage {
   protected toggleChange(event: CustomEvent) {
     this.darkModeService.toggleDarkPalette(event.detail.checked);
     this.hapticsService.vibrateDefault();
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
   }
 
   protected toggleHaptics(event: CustomEvent) {
     this.hapticsService.toggleHaptics(event.detail.checked);
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
+  }
+
+  protected toggleToasts(event: CustomEvent) {
+    this.affirmationToastService.toggleToasts(event.detail.checked);
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
   }
 
   protected rangeChanged(event: { target: { value: any } }) {
@@ -70,6 +111,11 @@ export class SettingsPage {
       event?.target.value,
     );
     this.hapticsService.vibrateDefault();
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
   }
 
   private getMatchingPairsStorageData() {
@@ -109,5 +155,10 @@ export class SettingsPage {
       event?.detail?.checked,
     );
     this.hapticsService.vibrateDefault();
+    this.affirmationToastService.presentToast(
+      'Settings Saved!',
+      'success',
+      'save-outline',
+    );
   }
 }

@@ -67,7 +67,7 @@
       shape="round"
       class="next"
       [color]="getTextColor()"
-      (click)="!!wrongAnswer ? handleMistakeDismiss() : handleRefresh()"
+      (click)="!!wrongAnswer ? handleMistakeDismiss() : handleRefresh(true)"
     >
       {{!!wrongAnswer ? 'Oops..!' : 'Next'}}
     </ion-button>

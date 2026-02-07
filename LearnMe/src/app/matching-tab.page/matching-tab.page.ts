@@ -16,8 +16,8 @@ import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 import { HapticsService } from '../services/haptics/haptics.service';
+import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
 const WORDS_SETS_LENGTH: number = 3;
-const WORDS_NUMBER_IN_ROUND: number = 5;
 @Component({
   selector: 'app-matching-tab.page',
   templateUrl: './matching-tab.page.html',
@@ -38,6 +38,7 @@ export class MatchingTabPage {
   private readonly utilityService = inject(UtilityService);
   private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   protected wordSets = signal<
     {
       left: WordCardModel[];
@@ -93,7 +94,11 @@ export class MatchingTabPage {
     return 'success';
   }
 
-  protected handleRefresh() {
+  protected handleRefresh(showToast: boolean = false) {
+    if (showToast) {
+      this.hapticsService.vibrateSuccess();
+      this.affirmationToastService.showPositiveToast();
+    }
     this.resetQuestion();
   }
 
@@ -137,11 +142,11 @@ export class MatchingTabPage {
         this.wrongAnswer = undefined;
         this.chosenAnswer = undefined;
         this.handleStatisticsUpdateAnswerStatus(true);
-        this.hapticsService.vibrateSuccess();
       } else {
         this.wrongAnswer = word;
         this.handleStatisticsUpdateAnswerStatus(false);
         this.hapticsService.vibrateError();
+        this.affirmationToastService.showNegativeToast();
       }
     }
   }
@@ -153,7 +158,7 @@ export class MatchingTabPage {
   }
 
   protected isGameDone() {
-    return this.foundWords.length === WORDS_NUMBER_IN_ROUND;
+    return this.foundWords.length === this.matchingPairs;
   }
 
   protected isButtonFound(word: WordCardModel) {

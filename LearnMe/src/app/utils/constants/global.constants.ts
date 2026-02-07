@@ -32,6 +32,7 @@ export enum LocalStorageKeysEnum {
   MatchPairs = 'matchPairsNumber',
   DarkMode = 'darkMode',
   Haptics = 'haptics',
+  ToastMessages = 'toastMessages',
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {

@@ -20,6 +20,7 @@ import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NgClass } from '@angular/common';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { HapticsService } from '../services/haptics/haptics.service';
+import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
 
 @Component({
   selector: 'app-articles-tab',
@@ -44,6 +45,7 @@ export class Tab2Page {
   private readonly gsApiService = inject(GsApiService);
   private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   protected words = signal<WordCardModel[]>([]);
   protected isCorrect: boolean = false;
   protected answered: boolean = false;
@@ -115,9 +117,11 @@ export class Tab2Page {
     ) {
       this.handleAnswer(true);
       this.hapticsService.vibrateSuccess();
+      this.affirmationToastService.showPositiveToast();
     } else {
       this.handleAnswer(false);
       this.hapticsService.vibrateError();
+      this.affirmationToastService.showNegativeToast();
     }
   }
 

@@ -27,6 +27,7 @@ import { checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
 import { take } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { HapticsService } from '../services/haptics/haptics.service';
+import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
 
 @Component({
   selector: 'app-swiper-tab',
@@ -52,6 +53,7 @@ export class Tab1Page implements AfterViewInit {
   private readonly hapticsService = inject(HapticsService);
   private readonly gestureCtrl = inject(GestureController);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   protected wordCards = signal<WordCardModel[]>([]);
 
   constructor() {
@@ -110,6 +112,7 @@ export class Tab1Page implements AfterViewInit {
             card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${detail.deltaX / 2}deg)`;
             this.removeSuccessWordCard(card.nativeElement.id, gesture);
             this.documentSuccess(card.nativeElement.id);
+            this.affirmationToastService.showPositiveToast();
           } else if (detail.deltaX < -SWIPE_THRESHOLD) {
             this.hapticsService.vibrateDefault();
             card.nativeElement.style.transform = '';

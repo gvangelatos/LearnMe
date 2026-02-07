@@ -27,6 +27,7 @@ import { UtilityService } from '../services/utility/utility.service';
 import { FormsModule } from '@angular/forms';
 import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 import { HapticsService } from '../services/haptics/haptics.service';
+import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
 
 const WORDS_SETS_LENGTH: number = 3;
 
@@ -59,6 +60,7 @@ export class TranslationsTabPage {
   private readonly utilityService = inject(UtilityService);
   private readonly hapticsService = inject(HapticsService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   protected wordSets = signal<
     {
       words: WordCardModel[];
@@ -184,9 +186,11 @@ export class TranslationsTabPage {
     ) {
       this.handleAnswer(true);
       this.hapticsService.vibrateSuccess();
+      this.affirmationToastService.showPositiveToast();
     } else {
       this.handleAnswer(false);
       this.hapticsService.vibrateError();
+      this.affirmationToastService.showNegativeToast();
     }
   }
 
