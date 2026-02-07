@@ -121,7 +121,7 @@ export class StatisticsTabPage {
 
   protected share() {
     this.vibrate();
-    this.sharingService.shareGraphs(
+    this.sharingService.shareElement(
       this.activeSegment,
       `Hey, Look how i am doing at the ${this.activeSegment.toUpperCase()} minigame in LearnMe!`,
       this.activeSegment,

@@ -10,6 +10,10 @@ export class SharingService {
   private readonly localStorageService = inject(LocalStorageService);
   private _isSharingEnabled = false;
 
+  get isSharingEnabled(): boolean {
+    return this._isSharingEnabled;
+  }
+
   initializeSharing() {
     let haringEnabledLocalStorageData =
       this.localStorageService.getItem<boolean>(LocalStorageKeysEnum.Sharing);
@@ -30,7 +34,7 @@ export class SharingService {
     this.localStorageService.setItem(LocalStorageKeysEnum.Sharing, enabled);
   }
 
-  async shareGraphs(
+  async shareElement(
     elementId: string,
     text: string,
     fileName: string = 'LearnMe',
@@ -38,33 +42,72 @@ export class SharingService {
     try {
       // Get the div element
       const element = document.getElementById(elementId);
-      if (!element) return;
-
-      // Convert to blob
-      const blob = await domtoimage.toBlob(element, {
-        width: element.offsetWidth * 2,
-        height: element.offsetHeight * 2,
-        style: {
-          transform: 'scale(2)',
-          transformOrigin: 'top left',
-        },
+      if (!element) {
+        console.error('Element not found:', elementId);
+        return;
+      }
+      // Check element dimensions
+      console.log('Element dimensions:', {
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        scrollWidth: element.scrollWidth,
+        scrollHeight: element.scrollHeight,
       });
 
-      const file = new File([blob], fileName + '.png', { type: 'image/png' });
+      // Make sure element is visible
+      const rect = element.getBoundingClientRect();
+      console.log('Element rect:', rect);
+
+      if (element.offsetWidth === 0 || element.offsetHeight === 0) {
+        console.error('Element has no dimensions');
+        return;
+      }
+
+      // Optional: wait a bit for animations/renders to complete
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log('Attempting to create blob...');
+
+      // Convert to blob
+      const dataUrl = await domtoimage.toPng(element, {
+        quality: 1,
+        cacheBust: true,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+      });
+
+      console.log('Data URL created');
+
+      // Convert data URL to blob
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+
+      console.log('Blob created:', blob.size, 'bytes');
+
+      if (!blob || blob.size === 0) {
+        console.error('Failed to create blob');
+        return;
+      }
+
+      const file = new File([blob], `${fileName}.png`, {
+        type: 'image/png',
+        lastModified: Date.now(),
+      });
 
       if (navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: fileName + '.png',
+          title: `${fileName}.png`,
           text,
         });
       } else {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = fileName;
+        link.download = `${fileName}.png`; // Added .png extension
+        document.body.appendChild(link); // Append to body for better compatibility
         link.click();
-        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
       }
     } catch (error) {
       console.error('Error sharing:', error);

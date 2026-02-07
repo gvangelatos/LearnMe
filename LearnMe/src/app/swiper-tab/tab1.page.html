@@ -31,7 +31,10 @@
       </div>
       }
       <ion-card-content>
-        <div class="word-translation-container">
+        <div
+          class="word-translation-container"
+          id="{{$index === (wordCards().length - 1) ? 'active-card' : ''}}"
+        >
           <div class="german-word-translation">
             {{ word.article ? word.article + ' ' : '' }}{{
             word.german_translation }}
@@ -46,4 +49,16 @@
     </ion-card>
     } }
   </div>
+  @if (sharingEnabled) {
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
+    <ion-fab-button color="dark" size="small" [disabled]="!wordCards().length">
+      <ion-icon name="chevron-down-circle-outline" />
+    </ion-fab-button>
+    <ion-fab-list side="bottom">
+      <ion-fab-button [disabled]="!wordCards().length" (click)="shareWord()">
+        <ion-icon name="share-outline" />
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  }
 </ion-content>

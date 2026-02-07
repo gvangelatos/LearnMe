@@ -5,6 +5,7 @@ import { LocalStorageService } from './services/local-storage-service/local-stor
 import { DarkModeService } from './services/dark-mode/dark-mode.service';
 import { HapticsService } from './services/haptics/haptics.service';
 import { AffirmationToastService } from './services/affirmation-toast-service/affirmation-toast.service';
+import { SharingService } from './services/sharing-service/sharing.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { AffirmationToastService } from './services/affirmation-toast-service/af
 })
 export class AppComponent {
   private readonly hapticsService = inject(HapticsService);
+  private readonly sharingService = inject(SharingService);
   private readonly darkModeService = inject(DarkModeService);
   private readonly affirmationToastService = inject(AffirmationToastService);
 
@@ -20,5 +22,6 @@ export class AppComponent {
     this.darkModeService.initializeDarkMode();
     this.hapticsService.initializeHaptics();
     this.affirmationToastService.initializeToastMessages();
+    this.sharingService.initializeSharing();
   }
 }

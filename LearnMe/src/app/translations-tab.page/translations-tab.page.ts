@@ -3,6 +3,9 @@ import {
   IonButton,
   IonButtons,
   IonContent,
+  IonFab,
+  IonFabButton,
+  IonFabList,
   IonHeader,
   IonIcon,
   IonItem,
@@ -20,7 +23,12 @@ import { GsApiService } from '../services/gs-api/gs-api.service';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { WordCardModel } from '../swiper-tab/tab1.models';
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline, settingsOutline } from 'ionicons/icons';
+import {
+  arrowForwardOutline,
+  chevronDownCircleOutline,
+  settingsOutline,
+  shareOutline,
+} from 'ionicons/icons';
 import { map, take } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
 import { UtilityService } from '../services/utility/utility.service';
@@ -28,6 +36,7 @@ import { FormsModule } from '@angular/forms';
 import { LocalStorageKeysEnum } from '../utils/constants/global.constants';
 import { HapticsService } from '../services/haptics/haptics.service';
 import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
+import { SharingService } from '../services/sharing-service/sharing.service';
 
 const WORDS_SETS_LENGTH: number = 3;
 
@@ -53,12 +62,16 @@ const WORDS_SETS_LENGTH: number = 3;
     IonToggle,
     FormsModule,
     IonSkeletonText,
+    IonFab,
+    IonFabButton,
+    IonFabList,
   ],
 })
 export class TranslationsTabPage {
   private readonly gsApiService = inject(GsApiService);
   private readonly utilityService = inject(UtilityService);
   private readonly hapticsService = inject(HapticsService);
+  private readonly sharingService = inject(SharingService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly affirmationToastService = inject(AffirmationToastService);
   protected wordSets = signal<
@@ -73,15 +86,31 @@ export class TranslationsTabPage {
   protected chosen: boolean = false;
   protected chosenAnswer?: number;
   protected germanEnabled: boolean = false;
+  protected sharingEnabled: boolean = false;
 
   constructor() {
     this.getIsGermanEnabledStorageData();
-    addIcons({ arrowForwardOutline, settingsOutline });
+    addIcons({
+      arrowForwardOutline,
+      settingsOutline,
+      chevronDownCircleOutline,
+      shareOutline,
+    });
     effect(() => {
       if (this.wordSets().length < WORDS_SETS_LENGTH) {
         this.getWordsSet();
       }
     });
+    this.sharingEnabled = this.sharingService.isSharingEnabled;
+  }
+
+  protected shareWord() {
+    this.hapticsService.vibrateDefault();
+    this.sharingService.shareElement(
+      'share-this-translations',
+      'Hey, take a look at this word!',
+      this.wordSets()[0].words[0].german_translation,
+    );
   }
 
   ionViewWillEnter() {

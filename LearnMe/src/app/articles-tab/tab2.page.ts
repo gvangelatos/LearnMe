@@ -11,16 +11,25 @@ import {
   IonRefresherContent,
   IonModal,
   IonSkeletonText,
+  IonFab,
+  IonFabButton,
+  IonFabList,
 } from '@ionic/angular/standalone';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { WordCardModel } from '../swiper-tab/tab1.models';
 import { ARTICLES } from './articles-page.constants';
 import { addIcons } from 'ionicons';
-import { languageOutline, arrowForwardOutline } from 'ionicons/icons';
+import {
+  languageOutline,
+  arrowForwardOutline,
+  chevronDownCircleOutline,
+  shareOutline,
+} from 'ionicons/icons';
 import { NgClass } from '@angular/common';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { HapticsService } from '../services/haptics/haptics.service';
 import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
+import { SharingService } from '../services/sharing-service/sharing.service';
 
 @Component({
   selector: 'app-articles-tab',
@@ -39,11 +48,15 @@ import { AffirmationToastService } from '../services/affirmation-toast-service/a
     IonRefresherContent,
     IonModal,
     IonSkeletonText,
+    IonFab,
+    IonFabButton,
+    IonFabList,
   ],
 })
 export class Tab2Page {
   private readonly gsApiService = inject(GsApiService);
   private readonly hapticsService = inject(HapticsService);
+  private readonly sharingService = inject(SharingService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly affirmationToastService = inject(AffirmationToastService);
   protected words = signal<WordCardModel[]>([]);
@@ -53,14 +66,34 @@ export class Tab2Page {
   protected correctAnswer?: number;
   protected showTranslation: boolean = false;
   protected chosen: boolean = false;
+  protected sharingEnabled: boolean = false;
 
   constructor() {
-    addIcons({ languageOutline, arrowForwardOutline });
+    addIcons({
+      languageOutline,
+      arrowForwardOutline,
+      chevronDownCircleOutline,
+      shareOutline,
+    });
     effect(() => {
       if (this.words().length < 3) {
         this.makeWordCall();
       }
     });
+    this.sharingEnabled = this.sharingService.isSharingEnabled;
+  }
+
+  ionViewWillEnter() {
+    this.sharingEnabled = this.sharingService.initializeSharing();
+  }
+
+  protected shareWord() {
+    this.hapticsService.vibrateDefault();
+    this.sharingService.shareElement(
+      'share-this-articles',
+      'Hey, take a look at this word!',
+      this.words()[0].german_translation,
+    );
   }
 
   private makeWordCall() {

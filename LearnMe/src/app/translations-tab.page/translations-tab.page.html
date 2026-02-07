@@ -1,11 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Guess The Translation </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button id="open-modal" (click)="vibrate()">
-        <ion-icon color="dark" slot="icon-only" name="settings-outline" />
-      </ion-button>
-    </ion-buttons>
+    <ion-title> Choose The Translation </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -33,7 +28,7 @@
   </ion-refresher>
   <div class="main-container">
     <div class="word-container">
-      <ion-text [color]="getTextColor()">
+      <ion-text [color]="getTextColor()" id="share-this-translations">
         <div
           [class]="{'german-translation':true,'shake': !isCorrect && answered }"
         >
@@ -59,6 +54,21 @@
     </div>
   </div>
   }
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
+    <ion-fab-button color="dark" size="small" [disabled]="!wordSets().length">
+      <ion-icon name="chevron-down-circle-outline" />
+    </ion-fab-button>
+    <ion-fab-list side="bottom">
+      <ion-fab-button id="open-modal-settings-translations" (click)="vibrate()">
+        <ion-icon name="settings-outline" />
+      </ion-fab-button>
+      @if (sharingEnabled) {
+      <ion-fab-button [disabled]="!wordSets().length" (click)="shareWord()">
+        <ion-icon name="share-outline" />
+      </ion-fab-button>
+      }
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
 
 <ion-modal
@@ -88,7 +98,7 @@
 
 <ion-modal
   #modal
-  trigger="open-modal"
+  trigger="open-modal-settings-translations"
   [canDismiss]="true"
   [initialBreakpoint]="0.25"
   [breakpoints]="[0, 0.25, 0.5, 0.75]"

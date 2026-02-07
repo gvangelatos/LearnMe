@@ -29,7 +29,7 @@
   <div class="main-container">
     <div class="word-container">
       <div class="word-icon-container">
-        <ion-text [color]="getTextColor()">
+        <ion-text id="share-this-articles" [color]="getTextColor()">
           <div
             [class]="{'german-translation':true,'shake': !isCorrect && answered }"
           >
@@ -68,12 +68,22 @@
       </div>
     </div>
   </div>
+  } @if (sharingEnabled) {
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
+    <ion-fab-button color="dark" size="small" [disabled]="!words().length">
+      <ion-icon name="chevron-down-circle-outline" />
+    </ion-fab-button>
+    <ion-fab-list side="bottom">
+      <ion-fab-button [disabled]="!words().length" (click)="shareWord()">
+        <ion-icon name="share-outline" />
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
   }
 </ion-content>
 
 <ion-modal
   #modal
-  trigger="open-modal"
   [isOpen]="chosen"
   [keyboardClose]="false"
   [backdropDismiss]="false"

@@ -18,16 +18,25 @@ import {
   IonCardContent,
   IonIcon,
   IonSkeletonText,
+  IonFab,
+  IonFabButton,
+  IonFabList,
 } from '@ionic/angular/standalone';
 import { SWIPE_THRESHOLD } from './swipe-page.constants';
 import { WordCardModel } from './tab1.models';
 import { GsApiService } from '../services/gs-api/gs-api.service';
 import { addIcons } from 'ionicons';
-import { checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import {
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  chevronDownCircleOutline,
+  shareOutline,
+} from 'ionicons/icons';
 import { take } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage-service/local-storage.service';
 import { HapticsService } from '../services/haptics/haptics.service';
 import { AffirmationToastService } from '../services/affirmation-toast-service/affirmation-toast.service';
+import { SharingService } from '../services/sharing-service/sharing.service';
 
 @Component({
   selector: 'app-swiper-tab',
@@ -42,6 +51,9 @@ import { AffirmationToastService } from '../services/affirmation-toast-service/a
     IonCardContent,
     IonIcon,
     IonSkeletonText,
+    IonFab,
+    IonFabButton,
+    IonFabList,
   ],
 })
 export class Tab1Page implements AfterViewInit {
@@ -50,14 +62,34 @@ export class Tab1Page implements AfterViewInit {
   private readonly platform = inject(Platform);
   private readonly gsApiService = inject(GsApiService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly sharingService = inject(SharingService);
   private readonly hapticsService = inject(HapticsService);
   private readonly gestureCtrl = inject(GestureController);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly affirmationToastService = inject(AffirmationToastService);
   protected wordCards = signal<WordCardModel[]>([]);
+  protected sharingEnabled: boolean = false;
 
   constructor() {
-    addIcons({ checkmarkCircleOutline, closeCircleOutline });
+    addIcons({
+      checkmarkCircleOutline,
+      closeCircleOutline,
+      chevronDownCircleOutline,
+      shareOutline,
+    });
+    this.sharingEnabled = this.sharingService.isSharingEnabled;
+  }
+  ionViewWillEnter() {
+    this.sharingEnabled = this.sharingService.initializeSharing();
+  }
+
+  protected shareWord() {
+    this.hapticsService.vibrateDefault();
+    this.sharingService.shareElement(
+      'active-card',
+      'Hey, take a look at this word!',
+      this.wordCards()[this.wordCards().length - 1].german_translation,
+    );
   }
 
   ngAfterViewInit() {
