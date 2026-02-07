@@ -81,8 +81,8 @@ export class SharingService {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${fileName}.png`; // Added .png extension
-        document.body.appendChild(link); // Append to body for better compatibility
+        link.download = `${fileName}.png`;
+        document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(url), 100);
