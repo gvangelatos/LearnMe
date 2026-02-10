@@ -165,7 +165,7 @@ export class Tab2Page {
   private handleAnswer(correct: boolean) {
     correct
       ? this.localStorageService.addArticlesPageSuccess()
-      : this.localStorageService.addArticlesPageFailure();
+      : this.localStorageService.addArticlesPageFailure(this.words()[0]);
     this.isCorrect = correct;
     this.answered = true;
     this.showTranslation = true;

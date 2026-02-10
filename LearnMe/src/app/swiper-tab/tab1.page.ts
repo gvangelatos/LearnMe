@@ -237,7 +237,10 @@ export class Tab1Page implements AfterViewInit {
         return card.id + '' === cardId && !card.isUnknown;
       })
     ) {
-      this.localStorageService.addSwiperPageFailure();
+      const word = this.wordCards().find((card) => {
+        return card.id + '' === cardId && !card.isUnknown;
+      });
+      this.localStorageService.addSwiperPageFailure(word);
     }
   }
 }

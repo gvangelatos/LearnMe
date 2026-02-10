@@ -1,7 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonFab,
   IonFabButton,
@@ -55,7 +54,6 @@ const WORDS_SETS_LENGTH: number = 3;
     IonButton,
     TitleCasePipe,
     IonModal,
-    IonButtons,
     IonIcon,
     IonList,
     IonItem,
@@ -230,7 +228,9 @@ export class TranslationsTabPage {
   private handleAnswer(correct: boolean) {
     correct
       ? this.localStorageService.addTranslationsPageSuccess()
-      : this.localStorageService.addTranslationsPageFailure();
+      : this.localStorageService.addTranslationsPageFailure(
+          this.wordSets()[0].words[0],
+        );
     this.isCorrect = correct;
     this.answered = true;
   }

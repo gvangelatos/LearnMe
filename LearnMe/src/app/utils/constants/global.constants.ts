@@ -34,6 +34,7 @@ export enum LocalStorageKeysEnum {
   Haptics = 'haptics',
   ToastMessages = 'toastMessages',
   Sharing = 'sharing',
+  OftenMadeMistakes = 'oftenMadeMistakes',
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {
