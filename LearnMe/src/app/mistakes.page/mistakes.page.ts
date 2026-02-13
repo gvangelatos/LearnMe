@@ -1,7 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import {
   IonBackButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
   IonContent,
   IonHeader,
   IonItem,
@@ -42,7 +44,10 @@ enum SelectionsEnum {
     IonSelect,
     IonSelectOption,
     FormsModule,
+    IonCard,
+    IonCardContent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MistakesPage {
   private readonly gsApiService = inject(GsApiService);
@@ -50,7 +55,7 @@ export class MistakesPage {
   private readonly mistakesService = inject(MistakesService);
   protected wordsMistakes: WordMistake[] = [];
   protected visualizationChartData: { name: string; value: number }[] = [];
-  protected visualizationType: SelectionsEnum = SelectionsEnum.Graph;
+  protected visualizationType: SelectionsEnum = SelectionsEnum.Cards;
   private mistakes: Mistake[] = [];
 
   ionViewWillEnter() {

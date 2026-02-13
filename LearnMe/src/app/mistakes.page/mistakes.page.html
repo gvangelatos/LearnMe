@@ -28,6 +28,7 @@
 </ion-header>
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
+  @if (wordsMistakes.length) {
   <div class="main-container">
     @if (visualizationType === SelectionsEnum.Graph) {
     <div class="graph-container">
@@ -43,7 +44,31 @@
       />
     </div>
     } @else if (visualizationType === SelectionsEnum.Cards) {
-      
+    <swiper-container
+      effect="cards"
+      cards-effect-perSlideOffset="8"
+      cards-effect-perSlideRotate="2"
+      cards-effect-slideShadows="true"
+      cards-effect-rotate="true"
+    >
+      @for (mist of wordsMistakes; track mist.word.id) {
+      <swiper-slide>
+        <ion-card class="word-text">
+          <ion-card-content>
+            <div class="mistakes-number">{{mist.times}} Times Wrong</div>
+            <div class="german-word-translation">
+              {{ mist.word.article ? mist.word.article + ' ' : '' }}{{
+              mist.word.german_translation }}
+            </div>
+            <div class="english-word-translation">
+              "{{ mist.word.english_translation }}"
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+      }
+    </swiper-container>
     }
   </div>
+  }
 </ion-content>

@@ -65,7 +65,7 @@ export const SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE: SearchPageLocalStorageDataTyp
 export const AVAILABLE_TABS_CONFIGURATIONS = [
   {
     iconActive: 'settings-outline',
-    path: '/tabs/settings',
+    path: '/settings',
     label: 'Settings',
   },
   {
