@@ -1,14 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage-service/local-storage.service';
 import { WordCardModel } from '../../swiper-tab/tab1.models';
-import { LocalStorageKeysEnum } from '../../utils/constants/global.constants';
+import {
+  LocalStorageKeysEnum,
+  Mistake,
+} from '../../utils/constants/global.constants';
 
 const MAX_OFTEN_MADE_MISTAKES_LIST_LENGTH: number = 10;
-
-interface Mistake {
-  wordID: string;
-  times: number;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +19,7 @@ export class MistakesService {
     return this._oftenMadeMistakesList;
   }
 
-  initializeSharing() {
+  initializeMistakes() {
     let oftenMadeMistakesListLocalStorageData =
       this.localStorageService.getItem<Mistake[]>(
         LocalStorageKeysEnum.OftenMadeMistakes,

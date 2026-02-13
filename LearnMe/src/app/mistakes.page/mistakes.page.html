@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        default-href="/tabs/home-page"
+        color="dark"
+        (click)="vibrate()"
+      />
+    </ion-buttons>
+    <ion-title> My Mistakes </ion-title>
+  </ion-toolbar>
+  <ion-list>
+    <ion-item>
+      <ion-select
+        label="Floating label"
+        label-placement="floating"
+        [(ngModel)]="visualizationType"
+      >
+        <ion-select-option [value]="SelectionsEnum.Graph">
+          Graph
+        </ion-select-option>
+        <ion-select-option [value]="SelectionsEnum.Cards">
+          Cards
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-header>
+
+<ion-content [forceOverscroll]="false" [fullscreen]="true">
+  <div class="main-container">
+    @if (visualizationType === SelectionsEnum.Graph) {
+    <div class="graph-container">
+      <ngx-charts-bar-horizontal
+        [results]="visualizationChartData"
+        [gradient]="true"
+        [wrapTicks]="false"
+        [legend]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showDataLabel]="true"
+        [maxYAxisTickLength]="5"
+      />
+    </div>
+    } @else if (visualizationType === SelectionsEnum.Cards) {
+      
+    }
+  </div>
+</ion-content>

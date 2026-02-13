@@ -25,6 +25,6 @@ export class AppComponent {
     this.hapticsService.initializeHaptics();
     this.affirmationToastService.initializeToastMessages();
     this.sharingService.initializeSharing();
-    this.mistakesService.initializeSharing();
+    this.mistakesService.initializeMistakes();
   }
 }

@@ -1,3 +1,5 @@
+import { WordCardModel } from '../../swiper-tab/tab1.models';
+
 export interface PageLocalStorageDataType {
   totalSuccesses: number;
   totalFails: number;
@@ -37,6 +39,15 @@ export enum LocalStorageKeysEnum {
   OftenMadeMistakes = 'oftenMadeMistakes',
 }
 
+export interface Mistake {
+  wordID: string;
+  times: number;
+}
+
+export interface WordMistake extends Mistake {
+  word: WordCardModel;
+}
+
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {
   totalSuccesses: 0,
   totalFails: 0,
@@ -52,6 +63,16 @@ export const SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE: SearchPageLocalStorageDataTyp
   };
 
 export const AVAILABLE_TABS_CONFIGURATIONS = [
+  {
+    iconActive: 'settings-outline',
+    path: '/tabs/settings',
+    label: 'Settings',
+  },
+  {
+    iconActive: 'thunderstorm-outline',
+    path: '/mistakes',
+    label: 'My Mistakes',
+  },
   {
     iconActive: 'grid',
     icon: 'grid-outline',
@@ -87,10 +108,4 @@ export const AVAILABLE_TABS_CONFIGURATIONS = [
     label: 'Swiper',
     src: './assets/svg/swipe-cards-filled.icon.svg',
   },
-  // {
-  //   iconActive: 'settings',
-  //   icon: 'settings-outline',
-  //   path: '/tabs/settings',
-  //   label: 'Settings',
-  // },
 ];
