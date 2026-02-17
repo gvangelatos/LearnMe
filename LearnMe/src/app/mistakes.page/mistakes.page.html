@@ -7,7 +7,7 @@
         (click)="vibrate()"
       />
     </ion-buttons>
-    <ion-title> My Mistakes </ion-title>
+    <ion-title> My Mistakes</ion-title>
   </ion-toolbar>
   <ion-list>
     <ion-item>
@@ -29,46 +29,61 @@
 
 <ion-content [forceOverscroll]="false" [fullscreen]="true">
   @if (wordsMistakes.length) {
-  <div class="main-container">
-    @if (visualizationType === SelectionsEnum.Graph) {
-    <div class="graph-container">
-      <ngx-charts-bar-horizontal
-        [results]="visualizationChartData"
-        [gradient]="true"
-        [wrapTicks]="false"
-        [legend]="false"
-        [xAxis]="true"
-        [yAxis]="true"
-        [showDataLabel]="true"
-        [maxYAxisTickLength]="5"
-      />
-    </div>
-    } @else if (visualizationType === SelectionsEnum.Cards) {
-    <swiper-container
-      effect="cards"
-      cards-effect-perSlideOffset="8"
-      cards-effect-perSlideRotate="2"
-      cards-effect-slideShadows="true"
-      cards-effect-rotate="true"
-    >
-      @for (mist of wordsMistakes; track mist.word.id) {
-      <swiper-slide>
-        <ion-card class="word-text">
-          <ion-card-content>
-            <div class="mistakes-number">{{mist.times}} Times Wrong</div>
-            <div class="german-word-translation">
-              {{ mist.word.article ? mist.word.article + ' ' : '' }}{{
-              mist.word.german_translation }}
-            </div>
-            <div class="english-word-translation">
-              "{{ mist.word.english_translation }}"
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </swiper-slide>
+    <div class="main-container">
+      @if (visualizationType === SelectionsEnum.Graph) {
+        <div class="graph-container">
+          <ngx-charts-bar-horizontal
+            [results]="visualizationChartData"
+            [gradient]="true"
+            [wrapTicks]="false"
+            [legend]="false"
+            [xAxis]="true"
+            [yAxis]="true"
+            [showDataLabel]="true"
+            [maxYAxisTickLength]="5"
+          />
+        </div>
+      } @else if (visualizationType === SelectionsEnum.Cards) {
+        <swiper-container
+          effect="cards"
+          cards-effect-perSlideOffset="8"
+          cards-effect-perSlideRotate="2"
+          cards-effect-slideShadows="true"
+          cards-effect-rotate="true"
+        >
+          @for (mist of wordsMistakes; track mist.word.id) {
+            <swiper-slide>
+              <ion-card class="word-text">
+                <ion-card-content>
+                  <div class="mistakes-number">{{ mist.times }} Times Wrong</div>
+                  <div class="german-word-translation">
+                    {{ mist.word.article ? mist.word.article + ' ' : '' }}{{
+                      mist.word.german_translation
+                    }}
+                  </div>
+                  <div class="english-word-translation">
+                    "{{ mist.word.english_translation }}"
+                  </div>
+                  <ion-button
+                    id="open-action-sheet-mistakes"
+                    class="clear-word-btn"
+                    fill="clear"
+                    color="dark"
+                    (click)="presentActionSheet(mist.word)"
+                  >
+                    <ion-icon
+                      color="danger"
+                      slot="icon-only"
+                      name="trash-outline"
+                      (click)="vibrate()"
+                    />
+                  </ion-button>
+                </ion-card-content>
+              </ion-card>
+            </swiper-slide>
+          }
+        </swiper-container>
       }
-    </swiper-container>
-    }
-  </div>
+    </div>
   }
 </ion-content>

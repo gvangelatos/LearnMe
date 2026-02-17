@@ -3,14 +3,14 @@
   width: 100%;
 }
 
-.main-container{
+.main-container {
   height: 90%;
   width: 100vw;
   display: flex;
   align-items: center;
 }
 
-.word-text{
+.word-text {
   width: 70vw;
   height: 50vh;
   text-align: center;
@@ -24,7 +24,7 @@
   position: relative;
 }
 
-.german-word-translation{
+.german-word-translation {
   font-size: xx-large;
 }
 
@@ -38,4 +38,16 @@ swiper-slide {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+ion-card-content {
+  height: 100%;
+  display: contents;
+  position: relative;
+}
+
+.clear-word-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
 }

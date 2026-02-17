@@ -5,6 +5,7 @@ import {
   LocalStorageKeysEnum,
   Mistake,
 } from '../../utils/constants/global.constants';
+import { AffirmationToastService } from '../affirmation-toast-service/affirmation-toast.service';
 
 const MAX_OFTEN_MADE_MISTAKES_LIST_LENGTH: number = 10;
 
@@ -13,6 +14,7 @@ const MAX_OFTEN_MADE_MISTAKES_LIST_LENGTH: number = 10;
 })
 export class MistakesService {
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly affirmationToastService = inject(AffirmationToastService);
   private _oftenMadeMistakesList: Mistake[] = [];
 
   get oftenMadeMistakesList(): Mistake[] {
@@ -34,6 +36,28 @@ export class MistakesService {
       this._oftenMadeMistakesList = oftenMadeMistakesListLocalStorageData;
     }
     return oftenMadeMistakesListLocalStorageData;
+  }
+
+  removeMistakeData(wordID: string) {
+    if (!this.isMistakeAlreadyMade(wordID)) {
+      return;
+    }
+    this._oftenMadeMistakesList = [
+      ...this._oftenMadeMistakesList.filter((mistake: Mistake) => {
+        return +mistake.wordID !== +wordID;
+      }),
+    ];
+    this.localStorageService.setItem(
+      LocalStorageKeysEnum.OftenMadeMistakes,
+      this._oftenMadeMistakesList,
+    );
+    this.affirmationToastService.presentToast(
+      'Mistake removed!',
+      'success',
+      'save-outline',
+      'bottom',
+    );
+    return this._oftenMadeMistakesList.length;
   }
 
   addMistake(wordID: string) {

@@ -1,17 +1,20 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonCard,
   IonCardContent,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonList,
   IonSelect,
   IonSelectOption,
   IonTitle,
   IonToolbar,
+  NavController,
 } from '@ionic/angular/standalone';
 import { HapticsService } from '../services/haptics/haptics.service';
 import { MistakesService } from '../services/mistakes-service/mistakes.service';
@@ -21,6 +24,9 @@ import { take } from 'rxjs';
 import { WordCardModel } from '../swiper-tab/tab1.models';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { FormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { trashOutline } from 'ionicons/icons';
+import { ActionSheetController } from '@ionic/angular';
 
 enum SelectionsEnum {
   Graph = 'graph',
@@ -46,17 +52,58 @@ enum SelectionsEnum {
     FormsModule,
     IonCard,
     IonCardContent,
+    IonButton,
+    IonIcon,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MistakesPage {
   private readonly gsApiService = inject(GsApiService);
+  private readonly navController = inject(NavController);
   private readonly hapticsService = inject(HapticsService);
   private readonly mistakesService = inject(MistakesService);
+  private readonly actionSheetCtrl = inject(ActionSheetController);
   protected wordsMistakes: WordMistake[] = [];
   protected visualizationChartData: { name: string; value: number }[] = [];
   protected visualizationType: SelectionsEnum = SelectionsEnum.Cards;
   private mistakes: Mistake[] = [];
+
+  constructor() {
+    addIcons({ trashOutline });
+  }
+
+  async presentActionSheet(word: WordCardModel) {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: `Delete word "${word.german_translation}" and all it's data form Mistakes?`,
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          data: {
+            action: 'delete',
+          },
+          handler: () => {
+            const mistakesLeft = this.mistakesService.removeMistakeData(
+              word.id,
+            );
+            if (mistakesLeft !== undefined && mistakesLeft <= 3) {
+              this.navController.navigateBack('');
+            }
+            this.ionViewWillEnter();
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+  }
 
   ionViewWillEnter() {
     const mistakesArray = this.mistakesService.initializeMistakes() ?? [];
