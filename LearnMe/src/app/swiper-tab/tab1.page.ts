@@ -142,9 +142,11 @@ export class Tab1Page implements AfterViewInit {
           if (detail.deltaX > SWIPE_THRESHOLD) {
             this.hapticsService.vibrateDefault();
             card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${detail.deltaX / 2}deg)`;
+            if (!this.wordCards()[this.wordCards().length - 1].isUnknown) {
+              this.affirmationToastService.showPositiveToast();
+            }
             this.removeSuccessWordCard(card.nativeElement.id, gesture);
             this.documentSuccess(card.nativeElement.id);
-            this.affirmationToastService.showPositiveToast();
           } else if (detail.deltaX < -SWIPE_THRESHOLD) {
             this.hapticsService.vibrateDefault();
             card.nativeElement.style.transform = '';
