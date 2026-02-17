@@ -191,7 +191,7 @@ export class GsApiService {
     return Array.from(unique) as number[];
   }
 
-  private getSpecificWordsData(positions: number[], count: number) {
+  getSpecificWordsData(positions: number[], count: number) {
     let query = `
     SELECT A, B, C, D, E
     WHERE A = ${positions[0]}

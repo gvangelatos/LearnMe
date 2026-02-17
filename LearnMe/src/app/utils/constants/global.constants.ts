@@ -1,3 +1,5 @@
+import { WordCardModel } from '../../swiper-tab/tab1.models';
+
 export interface PageLocalStorageDataType {
   totalSuccesses: number;
   totalFails: number;
@@ -34,6 +36,16 @@ export enum LocalStorageKeysEnum {
   Haptics = 'haptics',
   ToastMessages = 'toastMessages',
   Sharing = 'sharing',
+  OftenMadeMistakes = 'oftenMadeMistakes',
+}
+
+export interface Mistake {
+  wordID: string;
+  times: number;
+}
+
+export interface WordMistake extends Mistake {
+  word: WordCardModel;
 }
 
 export const PAGE_BASE_LOCAL_STORAGE_VALUE: PageLocalStorageDataType = {
@@ -50,46 +62,61 @@ export const SEARCH_PAGE_BASE_LOCAL_STORAGE_VALUE: SearchPageLocalStorageDataTyp
     byMonth: {},
   };
 
+export enum TabsLabelsEnum {
+  Settings = 'settings',
+  Mistakes = 'My Mistakes',
+  Articles = 'Articles',
+  Translations = 'Translations',
+  WordMatches = 'Word match',
+  Search = 'Search',
+  Statistics = 'Statistics',
+  Swiper = 'Swiper',
+}
+
 export const AVAILABLE_TABS_CONFIGURATIONS = [
+  {
+    iconActive: 'settings-outline',
+    path: '/settings',
+    label: TabsLabelsEnum.Settings,
+  },
+  {
+    iconActive: 'thunderstorm-outline',
+    path: '/mistakes',
+    label: TabsLabelsEnum.Mistakes,
+  },
   {
     iconActive: 'grid',
     icon: 'grid-outline',
     path: '/tabs/articles',
-    label: 'Articles',
+    label: TabsLabelsEnum.Articles,
   },
   {
     iconActive: 'language',
     icon: 'language-outline',
     path: '/tabs/translations',
-    label: 'Translations',
+    label: TabsLabelsEnum.Translations,
   },
   {
     iconActive: 'shuffle',
     icon: 'shuffle-outline',
     path: '/tabs/matching',
-    label: 'Word Match',
+    label: TabsLabelsEnum.WordMatches,
   },
   {
     iconActive: 'search',
     icon: 'search-outline',
     path: '/tabs/search',
-    label: 'Search',
+    label: TabsLabelsEnum.Search,
   },
   {
     iconActive: 'stats-chart',
     icon: 'stats-chart-outline',
     path: '/tabs/statistics',
-    label: 'Statistics',
+    label: TabsLabelsEnum.Statistics,
   },
   {
     path: '/tabs/swiper',
-    label: 'Swiper',
+    label: TabsLabelsEnum.Swiper,
     src: './assets/svg/swipe-cards-filled.icon.svg',
   },
-  // {
-  //   iconActive: 'settings',
-  //   icon: 'settings-outline',
-  //   path: '/tabs/settings',
-  //   label: 'Settings',
-  // },
 ];

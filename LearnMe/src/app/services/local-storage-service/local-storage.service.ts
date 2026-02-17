@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import {
   LocalStorageKeysEnum,
   PAGE_BASE_LOCAL_STORAGE_VALUE,
@@ -8,11 +8,14 @@ import {
   SearchPageLocalStorageDataType,
   SearchPageMonthStats,
 } from '../../utils/constants/global.constants';
+import { MistakesService } from '../mistakes-service/mistakes.service';
+import { WordCardModel } from '../../swiper-tab/tab1.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
+  private readonly injector = inject(Injector);
   setItem(key: LocalStorageKeysEnum, value: any): void {
     const jsonValue = JSON.stringify(value);
     localStorage.setItem(key, jsonValue);
@@ -32,13 +35,17 @@ export class LocalStorageService {
     localStorage.removeItem(key);
   }
 
-  addSwiperPageFailure(): void {
+  addSwiperPageFailure(word?: WordCardModel): void {
     const swiperPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.SwiperPage);
     this.applyPageFailure(
       LocalStorageKeysEnum.SwiperPage,
       swiperPageStatistics,
     );
+    if (word) {
+      const mistakesService = this.injector.get(MistakesService);
+      mistakesService.addMistake(word.id);
+    }
   }
 
   addSearchPageSearch(emptyResults: boolean) {
@@ -58,13 +65,17 @@ export class LocalStorageService {
     );
   }
 
-  addMatchPageFailure(): void {
+  addMatchPageFailure(word?: WordCardModel): void {
     const translationsPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.MatchPage);
     this.applyPageFailure(
       LocalStorageKeysEnum.MatchPage,
       translationsPageStatistics,
     );
+    if (word) {
+      const mistakesService = this.injector.get(MistakesService);
+      mistakesService.addMistake(word.id);
+    }
   }
 
   addTranslationsPageSuccess(): void {
@@ -78,7 +89,7 @@ export class LocalStorageService {
     );
   }
 
-  addTranslationsPageFailure(): void {
+  addTranslationsPageFailure(word?: WordCardModel): void {
     const translationsPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(
         LocalStorageKeysEnum.TranslationsPage,
@@ -87,6 +98,10 @@ export class LocalStorageService {
       LocalStorageKeysEnum.TranslationsPage,
       translationsPageStatistics,
     );
+    if (word) {
+      const mistakesService = this.injector.get(MistakesService);
+      mistakesService.addMistake(word.id);
+    }
   }
 
   addArticlesPageSuccess(): void {
@@ -98,13 +113,17 @@ export class LocalStorageService {
     );
   }
 
-  addArticlesPageFailure(): void {
+  addArticlesPageFailure(word?: WordCardModel): void {
     const articlesPageStatistics: PageLocalStorageDataType =
       this.handleLocalStorageDataRetrieval(LocalStorageKeysEnum.ArticlesPage);
     this.applyPageFailure(
       LocalStorageKeysEnum.ArticlesPage,
       articlesPageStatistics,
     );
+    if (word) {
+      const mistakesService = this.injector.get(MistakesService);
+      mistakesService.addMistake(word.id);
+    }
   }
 
   addSwiperPageSuccess(): void {

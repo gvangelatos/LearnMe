@@ -154,7 +154,7 @@ export class MatchingTabPage {
   protected handleStatisticsUpdateAnswerStatus(correct: boolean) {
     correct
       ? this.localStorageService.addMatchPageSuccess()
-      : this.localStorageService.addMatchPageFailure();
+      : this.localStorageService.addMatchPageFailure(this.wrongAnswer);
   }
 
   protected isGameDone() {
