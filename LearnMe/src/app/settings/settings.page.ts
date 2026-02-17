@@ -88,6 +88,7 @@ export class SettingsPage {
       'Settings Saved!',
       'success',
       'save-outline',
+      'bottom',
     );
   }
 
@@ -98,6 +99,7 @@ export class SettingsPage {
       'Settings Saved!',
       'success',
       'save-outline',
+      'bottom',
     );
   }
 
@@ -119,6 +121,7 @@ export class SettingsPage {
       'Settings Saved!',
       'success',
       'save-outline',
+      'bottom',
     );
   }
 
@@ -132,6 +135,7 @@ export class SettingsPage {
       'Settings Saved!',
       'success',
       'save-outline',
+      'bottom',
     );
   }
 
@@ -176,6 +180,7 @@ export class SettingsPage {
       'Settings Saved!',
       'success',
       'save-outline',
+      'bottom',
     );
   }
 }

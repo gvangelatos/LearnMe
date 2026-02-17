@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { mistakesGuard } from './utils/guards/mistakes-guard/mistakes-guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'mistakes',
+    canActivate: [mistakesGuard],
     loadComponent: () =>
       import('./mistakes.page/mistakes.page').then((m) => m.MistakesPage),
   },
